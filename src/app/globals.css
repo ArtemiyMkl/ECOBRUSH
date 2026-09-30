@@ -319,17 +319,18 @@ a {
    ============================================================ */
 /* Ohne `display`: die Regel steht außerhalb der Tailwind-Ebenen und würde eine
    Utility wie `flex` sonst überstimmen — Zeilen mit Wert rechts brächen um. */
+/* Zielfarbe, nicht Grau: eine Abteilung des Ladens ist kein Nebensatz, und ein
+   Grauton, den man erst suchen muss, macht die Liste nur leise, nicht ruhig.
+   Weil die Schrift schon steht, bleibt dem Überfahren allein die Fläche. */
 .nav-link {
   border-radius: var(--r-md);
-  color: var(--dim);
-  transition:
-    background var(--d-base) var(--ease),
-    color var(--d-base) var(--ease);
+  color: var(--txt);
+  letter-spacing: -0.01em;
+  transition: background var(--d-base) var(--ease);
 }
 
 .nav-link:hover {
   background: var(--acc-tint-soft);
-  color: var(--txt);
 }
 
 .nav-link[aria-current="page"] {

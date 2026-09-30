@@ -21,7 +21,7 @@ export function SidebarNav({
   };
 
   return (
-    <nav className="flex flex-col gap-0.5 p-3">
+    <nav className="flex flex-col gap-1.5 p-3">
       {items.map((item) => {
         const isActive =
           item.href === "/"
@@ -34,7 +34,7 @@ export function SidebarNav({
             href={item.href}
             aria-current={isActive ? "page" : undefined}
             onClick={closeDrawer}
-            className="nav-link block px-3 py-2 text-sm"
+            className="nav-link block px-3.5 py-2.5 text-base"
           >
             {item.label}
           </Link>

@@ -494,7 +494,7 @@ async function StatePanels({ t, f }: { t: Dictionary; f: Formatters }) {
                 >
                   <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
                   <span className="text-txt">{alert.label}</span>
-                  <IconChevron className="mt-0.5 ml-auto h-3 w-3 shrink-0 -rotate-90" />
+                  <IconChevron className="mt-0.5 ml-auto h-3 w-3 shrink-0 -rotate-90 text-dim" />
                 </Link>
               </li>
             ))}
