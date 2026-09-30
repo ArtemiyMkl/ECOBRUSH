@@ -7,20 +7,13 @@ export default function HomePage() {
 
   return (
     <>
-      <PageHeader
-        title="Главная"
-        description="Сводка по магазину EcoBrush"
-      />
+      <PageHeader title="Главная" description="Сводка по магазину EcoBrush" />
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {sections.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="rounded-xl border border-black/10 p-4 transition hover:border-emerald-600 hover:shadow-sm dark:border-white/10"
-          >
+          <Link key={item.href} href={item.href} className="tile block p-4">
             <h2 className="font-medium">{item.label}</h2>
-            <p className="mt-1 text-sm opacity-60">{item.description}</p>
+            <p className="mt-1 text-sm text-dim">{item.description}</p>
           </Link>
         ))}
       </div>

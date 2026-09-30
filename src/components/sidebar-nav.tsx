@@ -20,11 +20,7 @@ export function SidebarNav() {
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className={
-              isActive
-                ? "rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white"
-                : "rounded-lg px-3 py-2 text-sm font-medium opacity-70 transition hover:bg-black/5 hover:opacity-100 dark:hover:bg-white/10"
-            }
+            className="nav-link px-3 py-2 text-sm"
           >
             {item.label}
           </Link>

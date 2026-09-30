@@ -1,26 +1,499 @@
 @import "tailwindcss";
 
+/* ============================================================
+   1. Produkt-Tokens — in jedem Anstrich identisch.
+      Radien, Polsterung, Bewegung gehören dem Produkt, nicht dem Modus.
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  --d-schnell: 120ms;
+  --d-base: 200ms;
+  --d-ruhig: 320ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Markenton aus dem Logo. Identität, kein Interaktionston:
+     auf Schwarz kommt er nur auf ~3.6:1 und wirkt stumpf. */
+  --brand: #0f6b3d;
+
+  --font-ui: -apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto,
+    sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================================
+   2. Anstrich hell
+   ============================================================ */
+:root {
+  color-scheme: light;
+
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --raised: #f0f0f2;
+
+  --line: rgba(0, 0, 0, 0.12);
+  --line2: rgba(0, 0, 0, 0.06);
+  --line-strong: rgba(0, 0, 0, 0.24);
+
+  --txt: #1d1d1f;
+  --semi: #3a3a3c;
+  --dim: #6e6e73;
+  --disabled: rgba(29, 29, 31, 0.3);
+
+  /* Hell trägt den Markenton unverändert — auf Weiss steht er bei ~7.2:1. */
+  --acc: #0f6b3d;
+  --acc-hover: #0c5a33;
+  --acc-active: #094627;
+  --acc2: #34a06a;
+  --link: #0f6b3d;
+  --on-acc: #ffffff;
+  --focus: rgba(15, 107, 61, 0.55);
+  --acc-tint-strong: rgba(15, 107, 61, 0.2);
+  --acc-tint-soft: rgba(15, 107, 61, 0.08);
+
+  --ok: #248a3d;
+  --warn: #b25000;
+  --bad: #d70015;
+  --info: #0071a4;
+
+  --s-umsatz: #0071e3;
+  --s-roas: #248a3d;
+  --s-spend: #d70015;
+  --s-total-roas: #b25000;
+  --s-cyan: #0a84c4;
+
+  --thumb: rgba(0, 0, 0, 0.2);
+  --thumb-hover: rgba(0, 0, 0, 0.35);
+  --shadow-float: 0 12px 32px rgba(0, 0, 0, 0.18);
 }
 
+/* ============================================================
+   3. Anstrich dunkel — ausschliesslich Farbe, keine Form.
+      Unterhalb dieses Blocks fragt kein Selektor mehr nach dem Modus.
+   ============================================================ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
+
+    /* Helligkeitsleiter statt Schlagschatten */
+    --bg: #000000;
+    --surface: #161617;
+    --card: #1d1d1f;
+    --raised: #2c2c2e;
+
+    --line: rgba(255, 255, 255, 0.12);
+    --line2: rgba(255, 255, 255, 0.06);
+    --line-strong: rgba(255, 255, 255, 0.24);
+
+    /* nie reines Weiss — Halation auf Schwarz */
+    --txt: #f5f5f7;
+    --semi: #d6d6d8;
+    --dim: #a1a1a6;
+    --disabled: rgba(245, 245, 247, 0.3);
+
+    /* Markenton in der Helligkeit angehoben, Farbfamilie bleibt (~155°):
+       liegt zwischen Systemgrün (135°) und Mint (175°), kollidiert nicht
+       mit der Umsatz-Serie. --on-acc ist dunkel, weil der Ton hell ist. */
+    --acc: #3ed9a0;
+    --acc-hover: #5fe3b2;
+    --acc-active: #2fc08b;
+    --acc2: #a7eed2;
+    --link: #3ed9a0;
+    --on-acc: #04291b;
+    --focus: rgba(62, 217, 160, 0.6);
+    --acc-tint-strong: rgba(62, 217, 160, 0.28);
+    --acc-tint-soft: rgba(62, 217, 160, 0.1);
+
+    --ok: #30d158;
+    --warn: #ff9f0a;
+    --bad: #ff453a;
+    --info: #64d2ff;
+
+    --s-umsatz: #0a84ff;
+    --s-roas: #30d158;
+    --s-spend: #ff453a;
+    --s-total-roas: #ff9f0a;
+    --s-cyan: #4aa8ff;
+
+    --thumb: rgba(255, 255, 255, 0.2);
+    --thumb-hover: rgba(255, 255, 255, 0.35);
+    --shadow-float: 0 12px 32px rgba(0, 0, 0, 0.6);
   }
 }
 
+/* ============================================================
+   4. Tailwind-Brücke — Utilities lösen gegen die Tokens auf,
+      damit die Komponenten modus-blind bleiben.
+   ============================================================ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-raised: var(--raised);
+
+  --color-line: var(--line);
+  --color-line2: var(--line2);
+  --color-line-strong: var(--line-strong);
+
+  --color-txt: var(--txt);
+  --color-semi: var(--semi);
+  --color-dim: var(--dim);
+  --color-disabled: var(--disabled);
+
+  --color-brand: var(--brand);
+  --color-acc: var(--acc);
+  --color-acc-hover: var(--acc-hover);
+  --color-acc-active: var(--acc-active);
+  --color-on-acc: var(--on-acc);
+
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --color-info: var(--info);
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+
+  --font-sans: var(--font-ui);
+}
+
+/* ============================================================
+   5. Grundfläche
+   ============================================================ */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--font-ui);
+  /* Übergang auf body, nicht auf * — sonst kriecht die Seite zeilenweise nach */
+  transition:
+    background var(--d-ruhig) var(--ease),
+    color var(--d-ruhig) var(--ease);
+}
+
+::selection {
+  /* Akzentfläche mit dunklem Text wäre auf Schwarz unlesbar */
+  background: var(--acc-tint-strong);
+  color: var(--txt);
+}
+
+:focus-visible {
+  outline: none;
+  /* liegt aussen, verändert die Elementgrösse nicht */
+  box-shadow: 0 0 0 3px var(--focus);
+  border-radius: var(--r-sm);
+}
+
+a {
+  color: var(--link);
+}
+
+/* ============================================================
+   6. Flächen — Karten, Panels, KPI-Boxen, Kalenderkacheln
+   ============================================================ */
+.tile {
+  background: var(--card);
+  /* Eine Fläche darf ein <a> sein — dann trägt sie Text-, nicht Linkfarbe. */
+  color: var(--txt);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  transition:
+    background var(--d-base) var(--ease),
+    border-color var(--d-base) var(--ease),
+    transform var(--d-base) var(--ease);
+}
+
+@media (hover: hover) {
+  /* nur bei echtem Zeiger: auf Touch klebt :hover nach dem Tippen fest */
+  .tile:hover {
+    background: var(--raised);
+    border-color: var(--line-strong);
+    transform: translateY(-2px) scale(1.006);
+    /* sonst schiebt sich die Kachel unter ihre Nachbarin */
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.inset {
+  background: var(--surface);
+}
+
+.float {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  /* Schatten nur bei schwebenden Ebenen, nie an Karten */
+  box-shadow: var(--shadow-float);
+}
+
+/* ============================================================
+   7. Knöpfe — bewegen sich beim Hover nicht, federn erst beim Druck
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--d-base) var(--ease),
+    border-color var(--d-base) var(--ease),
+    color var(--d-base) var(--ease),
+    transform var(--d-schnell) var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* breite Zeilenknöpfe wackeln bei .96 sichtbar */
+.btn-wide:active {
+  transform: scale(0.98);
+}
+
+.btn-accent {
+  background: var(--acc);
+  color: var(--on-acc);
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  background: var(--acc-hover);
+}
+
+.btn-accent:active {
+  background: var(--acc-active);
+}
+
+.btn-quiet {
+  background: transparent;
+  color: var(--dim);
+}
+
+.btn-quiet:hover {
+  background: var(--acc-tint-soft);
+  color: var(--txt);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  /* keine opacity — sie dimmt Rahmen und Icons uneinheitlich */
+  background: var(--surface);
+  color: var(--disabled);
+  border-color: var(--line2);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:disabled:hover,
+.btn[aria-disabled="true"]:hover {
+  background: var(--surface);
+  color: var(--disabled);
+}
+
+/* ============================================================
+   8. Navigation
+   ============================================================ */
+.nav-link {
+  display: block;
+  border-radius: var(--r-md);
+  color: var(--dim);
+  transition:
+    background var(--d-base) var(--ease),
+    color var(--d-base) var(--ease);
+}
+
+.nav-link:hover {
+  background: var(--acc-tint-soft);
+  color: var(--txt);
+}
+
+.nav-link[aria-current="page"] {
+  background: var(--acc);
+  color: var(--on-acc);
+  font-weight: 600;
+}
+
+/* ============================================================
+   9. Eingabefelder
+   ============================================================ */
+.field {
+  background: var(--raised);
+  color: var(--txt);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition:
+    border-color var(--d-base) var(--ease),
+    box-shadow var(--d-base) var(--ease);
+}
+
+.field::placeholder {
+  color: var(--dim);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px var(--focus);
+}
+
+.field:disabled {
+  background: var(--surface);
+  color: var(--disabled);
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   10. Meldungen
+   ============================================================ */
+.alert-bad {
+  background: color-mix(in srgb, var(--bad) 14%, transparent);
+  color: var(--bad);
+  border-radius: var(--r-md);
+}
+
+/* ============================================================
+   11. Tabellen — sticky Kopf und Spalte
+   ============================================================ */
+.table {
+  width: 100%;
+  /* bei collapse gehören die Rahmen der Tabelle und wandern
+     mit der stickten Zelle nicht mit */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  border-bottom: 1px solid var(--line2);
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  /* deckend, sonst scheint der Inhalt hindurch */
+  background: var(--surface);
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.table [data-sticky-col] {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--card);
+}
+
+.table tbody tr:hover td {
+  background: var(--raised);
+}
+
+/* ============================================================
+   12. Sticky-Kopfleiste — Trennlinie erst beim Scrollen
+   ============================================================ */
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--d-base) var(--ease);
+}
+
+@supports (backdrop-filter: blur(20px)) {
+  .sticky-top {
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+}
+
+.sticky-top[data-scrolled="true"] {
+  border-bottom-color: var(--line);
+}
+
+/* jedes Sprungziel taucht sonst unter der Kopfzeile auf */
+[id] {
+  scroll-margin-top: 4rem;
+}
+
+/* ============================================================
+   13. Scrollen
+   ============================================================ */
+.scroll-area {
+  /* sonst scrollt die Seite dahinter weiter */
+  overscroll-behavior: contain;
+}
+
+.scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  /* weicher Verlauf am Rand: zeigt, dass es seitlich weitergeht */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 24px,
+    #000 calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumb) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--thumb);
+  border-radius: var(--r-pill);
+  border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--thumb-hover);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* ============================================================
+   14. Bewegung reduzieren — Transformationen abschalten,
+       nicht nur die Dauer auf 0 setzen (sonst springt es hart).
+       Jede neue Flächen- oder Knopfklasse gehört in diese Listen.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .btn,
+  .btn-wide,
+  .nav-link,
+  .field,
+  .sticky-top,
+  body {
+    transition: none;
+  }
+
+  .tile:hover,
+  .btn:active,
+  .btn-wide:active {
+    transform: none;
+  }
 }

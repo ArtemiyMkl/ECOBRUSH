@@ -20,7 +20,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
           autoComplete="email"
           defaultValue={state.email}
           required
-          className="rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 dark:border-white/15 dark:bg-white/5"
+          className="field px-3 py-2 text-sm"
         />
       </label>
 
@@ -31,15 +31,12 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
           type="password"
           autoComplete="current-password"
           required
-          className="rounded-lg border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 dark:border-white/15 dark:bg-white/5"
+          className="field px-3 py-2 text-sm"
         />
       </label>
 
       {state.error && (
-        <p
-          role="alert"
-          className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300"
-        >
+        <p role="alert" className="alert-bad px-3 py-2 text-sm">
           {state.error}
         </p>
       )}
@@ -47,7 +44,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
       <button
         type="submit"
         disabled={isPending}
-        className="mt-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
+        className="btn btn-accent btn-wide mt-1 px-4 py-2.5 text-sm"
       >
         {isPending ? "Входим…" : "Войти"}
       </button>
