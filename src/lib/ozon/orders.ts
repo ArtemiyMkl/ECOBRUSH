@@ -20,6 +20,21 @@ export function ordersWindow(): { since: string; to: string } {
   };
 }
 
+/** Das Fenster eines einzelnen Moskauer Tages. Der Filter rechnet in UTC, und
+ *  Moskau liegt seit 2014 ganzjährig drei Stunden davor — der Tag beginnt also
+ *  am Vorabend um 21:00 UTC. Vierzehn Tage zu holen, um einen zu zeichnen, war
+ *  der teuerste Abruf der Startseite. */
+export function dayWindow(day: string): { since: string; to: string } {
+  return {
+    since: `${shiftDays(day, -1)}T21:00:00.000Z`,
+    to: `${day}T21:00:00.000Z`,
+  };
+}
+
+/** Wie weit die Stundenkurve zurückreichen kann: die Posting-Endpunkte halten
+ *  nicht beliebig viel Geschichte vor. */
+export const HOURLY_LOOKBACK_DAYS = LOOKBACK_DAYS;
+
 const MOSCOW_HOUR = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Moscow",
   hour: "2-digit",

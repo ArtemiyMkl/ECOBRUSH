@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
       revalidate: 60,
       expire: 300,
     },
+    // Abgeschlossene Monate. Sie ändern sich nie wieder, kosten aber ein gutes
+    // Dutzend Anfragen — deshalb hält der Eintrag, bis ein neuer Monat einen
+    // neuen Schlüssel erzeugt, und wird dabei nie blockierend nachgeladen.
+    history: {
+      stale: 3600,
+      revalidate: 86400,
+      expire: 2592000,
+    },
   },
   images: {
     remotePatterns: [

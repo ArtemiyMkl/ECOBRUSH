@@ -26,6 +26,18 @@ export function EmptyState({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** Platzhalter für einen gestreamten Abschnitt. Er hält die Höhe des echten
+ *  Inhalts, damit beim Nachliefern nichts darunter wegspringt. */
+export function Skeleton({ rows = 3 }: { rows?: number }) {
+  return (
+    <div className="space-y-2" aria-hidden="true">
+      {Array.from({ length: rows }, (_, row) => (
+        <div key={row} className="skeleton h-5" />
+      ))}
+    </div>
+  );
+}
+
 export function Panel({
   title,
   aside,

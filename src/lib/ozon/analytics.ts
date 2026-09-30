@@ -41,46 +41,46 @@ function hasActivity(rows: DailyMetrics[]): boolean {
   return rows.some((row) => row.revenue > 0 || row.views > 0);
 }
 
-/** Die vollständige Tagesreihe seit Kontostart. Sie wird einmal geholt und im
- *  Speicher zerschnitten — jeder frei gewählte Zeitraum wäre sonst ein
- *  weiterer Treffer in das Limit von einer Anfrage pro Minute. */
-export async function getDailySeries(): Promise<DailyMetrics[]> {
+async function fetchDays(from: string, to: string): Promise<DailyMetrics[]> {
+  const raw = await sellerPost<AnalyticsResponse>("/v1/analytics/data", {
+    date_from: from,
+    date_to: to,
+    metrics: [...METRIC_KEYS],
+    dimension: ["day"],
+    filters: [],
+    sort: [{ key: "day", order: "ASC" }],
+    limit: 1000,
+    offset: 0,
+  });
+
+  return raw.result.data.map((row) => ({
+    date: row.dimensions[0].id,
+    ...toMetrics(row.metrics),
+  }));
+}
+
+/** Abgeschlossene Monate. Rückwärts in Jahresscheiben, bis eine leer bleibt —
+ *  so braucht es keinen fest verdrahteten Kontostart. Der Schnitt liegt auf
+ *  einem Monatsersten, also bleibt der Cache-Schlüssel einen Monat lang gleich
+ *  und die Historie wird nicht bei jedem Ablauf neu geholt. */
+async function seriesBefore(until: string): Promise<DailyMetrics[]> {
   "use cache";
-  cacheLife("ozon");
+  cacheLife("history");
   cacheTag("ozon-analytics");
 
   if (!OZON_LIVE) {
     const raw = await loadFixture<AnalyticsResponse>("analytics-daily.json");
-    return raw.result.data.map((row) => ({
-      date: row.dimensions[0].id,
-      ...toMetrics(row.metrics),
-    }));
+    return raw.result.data
+      .map((row) => ({ date: row.dimensions[0].id, ...toMetrics(row.metrics) }))
+      .filter((row) => row.date < until);
   }
 
   const series: DailyMetrics[] = [];
-  // Der laufende Tag gehört dazu: Ozon bucht ihn zwar erst nachts endgültig ab,
-  // liefert aber laufend Zwischenstände — und genau die will der Verkäufer
-  // morgens sehen. Rückwärts, bis eine Jahresscheibe leer bleibt, so braucht es
-  // keinen fest verdrahteten Kontostart.
-  let to = moscowDay(new Date());
+  let to = shiftDays(until, -1);
 
   for (let chunk = 0; chunk < MAX_CHUNKS; chunk++) {
     const from = shiftDays(to, -CHUNK_DAYS);
-    const raw = await sellerPost<AnalyticsResponse>("/v1/analytics/data", {
-      date_from: from,
-      date_to: to,
-      metrics: [...METRIC_KEYS],
-      dimension: ["day"],
-      filters: [],
-      sort: [{ key: "day", order: "ASC" }],
-      limit: 1000,
-      offset: 0,
-    });
-
-    const rows = raw.result.data.map((row) => ({
-      date: row.dimensions[0].id,
-      ...toMetrics(row.metrics),
-    }));
+    const rows = await fetchDays(from, to);
 
     series.unshift(...rows);
     if (!hasActivity(rows)) break;
@@ -91,6 +91,40 @@ export async function getDailySeries(): Promise<DailyMetrics[]> {
   // Ansicht mit leerem Vorlauf strecken.
   const start = series.findIndex((row) => row.revenue > 0 || row.views > 0);
   return start > 0 ? series.slice(start) : series;
+}
+
+/** Der laufende Monat, einschließlich heute: Ozon bucht den Tag zwar erst nachts
+ *  endgültig ab, liefert aber laufend Zwischenstände — und genau die will der
+ *  Verkäufer sehen. Höchstens 31 Tage, also eine einzige Anfrage. */
+async function seriesSince(from: string, to: string): Promise<DailyMetrics[]> {
+  "use cache";
+  cacheLife("live");
+  cacheTag("ozon-analytics");
+
+  if (!OZON_LIVE) {
+    const raw = await loadFixture<AnalyticsResponse>("analytics-daily.json");
+    return raw.result.data
+      .map((row) => ({ date: row.dimensions[0].id, ...toMetrics(row.metrics) }))
+      .filter((row) => row.date >= from && row.date <= to);
+  }
+
+  return fetchDays(from, to);
+}
+
+/** Die vollständige Tagesreihe seit Kontostart. Sie wird im Speicher
+ *  zerschnitten — jeder frei gewählte Zeitraum wäre sonst ein weiterer Treffer
+ *  in das Limit von einer Anfrage pro Sekunde. Die Uhr wird hier gelesen, damit
+ *  die Cache-Schlüssel feste Daten bleiben. */
+export async function getDailySeries(): Promise<DailyMetrics[]> {
+  const today = moscowDay(new Date());
+  const monthStart = `${today.slice(0, 7)}-01`;
+
+  const [history, month] = await Promise.all([
+    seriesBefore(monthStart),
+    seriesSince(monthStart, today),
+  ]);
+
+  return [...history, ...month];
 }
 
 /** Zerlegt einen Zeitraum in Scheiben, die Ozons Jahresgrenze einhalten. */

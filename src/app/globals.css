@@ -15,6 +15,8 @@
   --d-base: 200ms;
   --d-ruhig: 320ms;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Für Auftritte: schnell heraus, langes Auslaufen — ein Eintreffen, kein Weg. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Markenton aus dem Logo. Identität, kein Interaktionston:
      auf Schwarz kommt er nur auf ~3.6:1 und wirkt stumpf. */
@@ -823,7 +825,41 @@ a {
 }
 
 /* ============================================================
-   18. Bewegung reduzieren — Transformationen abschalten,
+   18. Platzhalter — Abschnitte, die nachgeliefert werden.
+       Kein Farbverlauf: er müsste in beiden Anstrichen getrennt
+       gestimmt werden, ein Atmen der Fläche nicht.
+   ============================================================ */
+.skeleton {
+  border-radius: var(--r-sm);
+  background: var(--raised);
+  animation: skeleton-atem 1.6s var(--ease) infinite;
+}
+
+@keyframes skeleton-atem {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ============================================================
+   19. Auftritt der Marke — das Zeichen setzt sich beim Start
+       einmal, statt einfach dazustehen. Kein vorgeschaltetes
+       Startbild: die App soll schneller wirken, nicht länger
+       dauern, deshalb läuft das hier neben dem Aufbau.
+   ============================================================ */
+.brand-in {
+  animation: brand-in var(--d-ruhig) var(--ease-out) both;
+}
+
+@keyframes brand-in {
+  from {
+    opacity: 0;
+    scale: 0.72;
+  }
+}
+
+/* ============================================================
+   20. Bewegung reduzieren — Transformationen abschalten,
        nicht nur die Dauer auf 0 setzen (sonst springt es hart).
        Jede neue Flächen- oder Knopfklasse gehört in diese Listen.
    ============================================================ */
@@ -857,5 +893,10 @@ a {
 
   .nav-drawer {
     translate: none;
+  }
+
+  .skeleton,
+  .brand-in {
+    animation: none;
   }
 }

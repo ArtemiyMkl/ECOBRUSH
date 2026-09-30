@@ -52,5 +52,10 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  // `icon` und `apple-icon` werden erzeugt und tragen deshalb keine Endung —
+  // ohne eigene Ausnahme liefe das Symbol gegen die Anmeldung, und genau die
+  // Seite, die es am nötigsten braucht, bliebe ohne.
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|icon$|apple-icon$|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

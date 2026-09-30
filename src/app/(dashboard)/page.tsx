@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import Link from "next/link";
-import { PageHeader, Panel } from "@/components/page-header";
+import { PageHeader, Panel, Skeleton } from "@/components/page-header";
 import { RangePicker } from "@/components/range-picker";
 import { BarList, Legend, LineChart, Sparkline } from "@/components/charts";
 import { Delta, Kpi, KpiGrid, MoreMetrics } from "@/components/kpi";
@@ -20,16 +21,19 @@ import {
   IconUnits,
   IconViews,
 } from "@/components/icons";
-import { getTranslations } from "@/lib/i18n/server";
-import { createFormatters } from "@/lib/format";
+import { getTranslations, type Dictionary } from "@/lib/i18n/server";
+import { createFormatters, type Formatters } from "@/lib/format";
 import {
+  moscowDay,
   parseSelection,
   resolveRange,
   selectionParams,
+  shiftDays,
   spendFor,
   spendPerBucket,
   defaultGranularity,
   withParams,
+  type Range,
 } from "@/lib/period";
 import {
   bucket,
@@ -41,7 +45,12 @@ import {
 import { getProducts, getSellerRating } from "@/lib/ozon/catalog";
 import { getAdSpend } from "@/lib/ozon/marketing";
 import { getChats } from "@/lib/ozon/support";
-import { getPostings, hourlyTotals, ordersWindow } from "@/lib/ozon/orders";
+import {
+  dayWindow,
+  getPostings,
+  hourlyTotals,
+  HOURLY_LOOKBACK_DAYS,
+} from "@/lib/ozon/orders";
 import { OZON_LIVE } from "@/lib/ozon/client";
 
 export default async function HomePage({ searchParams }: PageProps<"/">) {
@@ -49,18 +58,13 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
   const f = createFormatters(locale);
   const selection = parseSelection(await searchParams);
 
-  const [series, ads, products, chats, rating] = await Promise.all([
-    getDailySeries(),
-    getAdSpend(),
-    getProducts(),
-    getChats(),
-    getSellerRating(),
-  ]);
+  // Nur was die Kopfzahlen tragen, blockiert. Katalog, Chats und die
+  // SKU-Abfrage kommen nach — sie stehen weiter unten und sind die teuersten.
+  const [series, ads] = await Promise.all([getDailySeries(), getAdSpend()]);
 
   // Der Zeitraum steht erst fest, wenn die Reihe da ist — „alle Zeit“ richtet
   // sich nach ihrem ersten Tag, und die SKU-Abfrage braucht beide Grenzen.
   const range = resolveRange(selection, series);
-  const topSkus = await getTopSkus(range.from, range.to);
 
   const { current, previous, currentTotal, previousTotal } = compare(
     series,
@@ -73,13 +77,15 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
   // Ein einzelner Tag ist als Punkt keine Entwicklung. Stunden stehen nur in den
   // Aufträgen, und die reichen vierzehn Tage zurück — für ältere Tage bleibt es
   // bei der Tagesreihe.
-  const ordersRange = ordersWindow();
+  const hourlyDay =
+    range.days === 1 &&
+    range.from >= shiftDays(moscowDay(new Date()), -(HOURLY_LOOKBACK_DAYS - 1))
+      ? range.from
+      : null;
+  const day = hourlyDay ? dayWindow(hourlyDay) : null;
   const hourly =
-    range.days === 1 && range.from >= ordersRange.since.slice(0, 10)
-      ? hourlyTotals(
-          await getPostings(ordersRange.since, ordersRange.to),
-          range.from,
-        )
+    hourlyDay && day
+      ? hourlyTotals(await getPostings(day.since, day.to), hourlyDay)
       : null;
 
   const spend = spendFor(ads.byDay, current);
@@ -98,14 +104,6 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
     previousTotal.orderedUnits > 0
       ? previousTotal.revenue / previousTotal.orderedUnits
       : 0;
-
-  const outOfStock = products.filter(
-    (p) => !p.isArchived && p.fboStock + p.fbsStock === 0,
-  );
-  const redZone = products.filter((p) => p.priceZone === "red");
-  const unreadBuyerChats = chats.filter(
-    (c) => c.kind === "buyer" && c.unreadCount > 0,
-  );
 
   // Im Stundenmodus gibt es keine Werbeausgaben je Stunde — dort läuft die
   // zweite Linie über die Stückzahl, die aus denselben Aufträgen kommt.
@@ -144,59 +142,9 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         },
   ];
 
-  const topRevenue = Math.max(...topSkus.map((s) => s.revenue), 1);
-
-  // Jede Warnung führt auf die Liste, die sie meint — eine Zahl ohne Weg dahin
-  // ist keine Information, nur ein Schreck.
-  const alerts = [
-    outOfStock.length > 0 && {
-      href: withParams("/products", { s: "out" }),
-      label: `${outOfStock.length} ${t.home.alertOutOfStock}`,
-    },
-    redZone.length > 0 && {
-      href: withParams("/products", { z: "red" }),
-      label: `${redZone.length} ${t.home.alertRedZone}`,
-    },
-    unreadBuyerChats.length > 0 && {
-      href: "/customers",
-      label: `${unreadBuyerChats.length} ${t.home.alertUnread}`,
-    },
-  ].filter((alert): alert is { href: string; label: string } => Boolean(alert));
-
   const period = selectionParams(selection);
   const analyticsHref = withParams("/analytics", period);
   const promotionHref = withParams("/promotion", period);
-
-  const stats = [
-    {
-      id: "rating",
-      icon: <IconStar />,
-      label: t.kpi.rating,
-      value: f.decimal(rating.productScore),
-      href: null,
-    },
-    {
-      id: "localization",
-      icon: <IconGlobe />,
-      label: t.kpi.localization,
-      value: f.percent(rating.localizationPercent),
-      href: null,
-    },
-    {
-      id: "stock",
-      icon: <IconStock />,
-      label: t.kpi.outOfStock,
-      value: f.integer(outOfStock.length),
-      href: withParams("/products", { s: "out" }),
-    },
-    {
-      id: "chats",
-      icon: <IconChat />,
-      label: t.kpi.unreadChats,
-      value: f.integer(unreadBuyerChats.length),
-      href: "/customers",
-    },
-  ];
 
   const vs = t.common.vsPrevious;
 
@@ -436,86 +384,200 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         </Panel>
 
         <div className="flex flex-col gap-4">
-          <Panel title={t.home.attention}>
-            {alerts.length === 0 ? (
-              <p className="text-sm text-dim">{t.home.allGood}</p>
-            ) : (
-              <ul className="-mx-1 space-y-0.5">
-                {alerts.map((alert) => (
-                  <li key={alert.href}>
-                    <Link
-                      href={alert.href}
-                      className="nav-link flex items-start gap-2 px-2 py-1.5 text-sm no-underline"
-                    >
-                      <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
-                      <span className="text-txt">{alert.label}</span>
-                      <IconChevron className="mt-0.5 ml-auto h-3 w-3 shrink-0 -rotate-90" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Panel>
-
-          <Panel title={t.kpi.rating}>
-            <ul className="-mx-1 space-y-0.5 text-sm">
-              {stats.map((stat) => {
-                const body = (
-                  <>
-                    <span className="flex items-center gap-1.5 text-dim">
-                      {stat.icon}
-                      {stat.label}
-                    </span>
-                    <span className="ml-auto font-semibold tabular-nums text-txt">
-                      {stat.value}
-                    </span>
-                    {stat.href && (
-                      <IconChevron className="h-3 w-3 shrink-0 -rotate-90 text-dim" />
-                    )}
-                  </>
-                );
-
-                return (
-                  <li key={stat.id}>
-                    {stat.href ? (
-                      <Link
-                        href={stat.href}
-                        className="nav-link flex items-center gap-2 px-2 py-1.5 no-underline"
-                      >
-                        {body}
-                      </Link>
-                    ) : (
-                      <div className="flex items-center gap-2 px-2 py-1.5">
-                        {body}
-                      </div>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </Panel>
+          <Suspense
+            fallback={
+              <>
+                <Panel title={t.home.attention}>
+                  <Skeleton rows={2} />
+                </Panel>
+                <Panel title={t.kpi.rating}>
+                  <Skeleton rows={4} />
+                </Panel>
+              </>
+            }
+          >
+            <StatePanels t={t} f={f} />
+          </Suspense>
         </div>
       </div>
 
-      <Panel
-        title={t.home.topProducts}
-        className="mt-4"
-        aside={
-          <Link href={withParams("/products", period)} className="text-xs">
-            {t.common.open}
-          </Link>
+      <Suspense
+        fallback={
+          <Panel title={t.home.topProducts} className="mt-4">
+            <Skeleton rows={8} />
+          </Panel>
         }
       >
-        <BarList
-          items={topSkus.slice(0, 8).map((sku) => ({
-            id: sku.sku,
-            label: sku.name,
-            value: f.money(sku.revenue),
-            share: sku.revenue / topRevenue,
-            href: withParams(`/products/${sku.sku}`, period),
-          }))}
-        />
+        <TopProducts range={range} period={period} t={t} f={f} />
+      </Suspense>
+    </>
+  );
+}
+
+/** Warnungen und Kontokennzahlen hängen an Katalog, Chats und Bewertung — drei
+ *  Abrufe, die die Kopfzahlen nicht brauchen. */
+async function StatePanels({ t, f }: { t: Dictionary; f: Formatters }) {
+  const [products, chats, rating] = await Promise.all([
+    getProducts(),
+    getChats(),
+    getSellerRating(),
+  ]);
+
+  const outOfStock = products.filter(
+    (p) => !p.isArchived && p.fboStock + p.fbsStock === 0,
+  );
+  const redZone = products.filter((p) => p.priceZone === "red");
+  const unreadBuyerChats = chats.filter(
+    (c) => c.kind === "buyer" && c.unreadCount > 0,
+  );
+
+  // Jede Warnung führt auf die Liste, die sie meint — eine Zahl ohne Weg dahin
+  // ist keine Information, nur ein Schreck.
+  const alerts = [
+    outOfStock.length > 0 && {
+      href: withParams("/products", { s: "out" }),
+      label: `${outOfStock.length} ${t.home.alertOutOfStock}`,
+    },
+    redZone.length > 0 && {
+      href: withParams("/products", { z: "red" }),
+      label: `${redZone.length} ${t.home.alertRedZone}`,
+    },
+    unreadBuyerChats.length > 0 && {
+      href: "/customers",
+      label: `${unreadBuyerChats.length} ${t.home.alertUnread}`,
+    },
+  ].filter((alert): alert is { href: string; label: string } => Boolean(alert));
+
+  const stats = [
+    {
+      id: "rating",
+      icon: <IconStar />,
+      label: t.kpi.rating,
+      value: f.decimal(rating.productScore),
+      href: null,
+    },
+    {
+      id: "localization",
+      icon: <IconGlobe />,
+      label: t.kpi.localization,
+      value: f.percent(rating.localizationPercent),
+      href: null,
+    },
+    {
+      id: "stock",
+      icon: <IconStock />,
+      label: t.kpi.outOfStock,
+      value: f.integer(outOfStock.length),
+      href: withParams("/products", { s: "out" }),
+    },
+    {
+      id: "chats",
+      icon: <IconChat />,
+      label: t.kpi.unreadChats,
+      value: f.integer(unreadBuyerChats.length),
+      href: "/customers",
+    },
+  ];
+
+  return (
+    <>
+      <Panel title={t.home.attention}>
+        {alerts.length === 0 ? (
+          <p className="text-sm text-dim">{t.home.allGood}</p>
+        ) : (
+          <ul className="-mx-1 space-y-0.5">
+            {alerts.map((alert) => (
+              <li key={alert.href}>
+                <Link
+                  href={alert.href}
+                  className="nav-link flex items-start gap-2 px-2 py-1.5 text-sm no-underline"
+                >
+                  <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
+                  <span className="text-txt">{alert.label}</span>
+                  <IconChevron className="mt-0.5 ml-auto h-3 w-3 shrink-0 -rotate-90" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+
+      <Panel title={t.kpi.rating}>
+        <ul className="-mx-1 space-y-0.5 text-sm">
+          {stats.map((stat) => {
+            const body = (
+              <>
+                <span className="flex items-center gap-1.5 text-dim">
+                  {stat.icon}
+                  {stat.label}
+                </span>
+                <span className="ml-auto font-semibold tabular-nums text-txt">
+                  {stat.value}
+                </span>
+                {stat.href && (
+                  <IconChevron className="h-3 w-3 shrink-0 -rotate-90 text-dim" />
+                )}
+              </>
+            );
+
+            return (
+              <li key={stat.id}>
+                {stat.href ? (
+                  <Link
+                    href={stat.href}
+                    className="nav-link flex items-center gap-2 px-2 py-1.5 no-underline"
+                  >
+                    {body}
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-2 px-2 py-1.5">
+                    {body}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
       </Panel>
     </>
+  );
+}
+
+/** Die SKU-Metriken brauchen eine eigene Abfrage je Zeitraum und sind damit der
+ *  einzige Abruf, der bei jedem Wechsel des Zeitraums kalt ist. */
+async function TopProducts({
+  range,
+  period,
+  t,
+  f,
+}: {
+  range: Range;
+  period: Record<string, string | undefined>;
+  t: Dictionary;
+  f: Formatters;
+}) {
+  const topSkus = await getTopSkus(range.from, range.to);
+  const topRevenue = Math.max(...topSkus.map((sku) => sku.revenue), 1);
+
+  return (
+    <Panel
+      title={t.home.topProducts}
+      className="mt-4"
+      aside={
+        <Link href={withParams("/products", period)} className="text-xs">
+          {t.common.open}
+        </Link>
+      }
+    >
+      <BarList
+        items={topSkus.slice(0, 8).map((sku) => ({
+          id: sku.sku,
+          label: sku.name,
+          value: f.money(sku.revenue),
+          share: sku.revenue / topRevenue,
+          href: withParams(`/products/${sku.sku}`, period),
+        }))}
+      />
+    </Panel>
   );
 }
