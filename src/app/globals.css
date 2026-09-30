@@ -590,7 +590,239 @@ a {
 }
 
 /* ============================================================
-   17. Bewegung reduzieren — Transformationen abschalten,
+   17. Überlagerungen — Zeitraumwahl, Bildansicht
+
+   Alles über das native `popover`: der Browser bringt Top-Layer,
+   Schließen durch Klick daneben und Escape schon mit, und ohne
+   Client-Bündel. Positioniert wird gegen den Viewport, weil im
+   Top-Layer kein Vorfahre mehr als Bezug dient — CSS-Anchor wäre
+   schöner, ist aber noch nicht überall da.
+   ============================================================ */
+.pop {
+  position: fixed;
+  /* am Telefon von unten: dort ist der Daumen */
+  inset: auto 0 0 0;
+  width: auto;
+  max-width: 100%;
+  max-height: 85dvh;
+  margin: 0;
+  overflow: hidden auto;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-bottom: none;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--card);
+  color: var(--txt);
+  box-shadow: var(--shadow-float);
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity var(--d-base) var(--ease),
+    scale var(--d-base) var(--ease),
+    overlay var(--d-base) allow-discrete,
+    display var(--d-base) allow-discrete;
+}
+
+@media (min-width: 40rem) {
+  .pop {
+    /* unter der Kopfzeile, waagerecht mittig — deshalb bleibt `scale`
+       für die Bewegung, `translate` hält die Mitte */
+    inset: 5rem auto auto 50%;
+    translate: -50% 0;
+    width: max-content;
+    max-width: min(34rem, calc(100vw - 2rem));
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+  }
+}
+
+.pop:not(:popover-open) {
+  opacity: 0;
+  scale: 0.98;
+}
+
+@starting-style {
+  .pop:popover-open {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
+
+.pop::backdrop,
+.nav-drawer::backdrop {
+  background: color-mix(in srgb, var(--bg) 40%, transparent);
+  opacity: 1;
+  transition:
+    opacity var(--d-base) var(--ease),
+    display var(--d-base) allow-discrete;
+}
+
+@supports (backdrop-filter: blur(20px)) {
+  .pop::backdrop,
+  .nav-drawer::backdrop {
+    backdrop-filter: blur(24px) saturate(140%);
+  }
+}
+
+.pop:not(:popover-open)::backdrop,
+.nav-drawer:not(:popover-open)::backdrop {
+  opacity: 0;
+}
+
+@starting-style {
+  .pop:popover-open::backdrop,
+  .nav-drawer:popover-open::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Bildansicht: randlos und so groß, wie das Fenster zulässt. `display` bleibt
+   der UA-Regel überlassen — ein fest gesetztes `flex` schlüge sie, und die
+   geschlossenen Ansichten lägen unsichtbar über der Seite und fingen die
+   Klicks ab, die eigentlich die Bilder öffnen sollen. */
+.pop-photo:popover-open {
+  display: flex;
+}
+
+.pop-photo {
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100dvh;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (min-width: 40rem) {
+  .pop-photo {
+    inset: 0;
+    translate: none;
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+.pop-photo::backdrop {
+  background: color-mix(in srgb, #000 62%, transparent);
+}
+
+/* Die ganze Überlagerung schließt mit: der Knopf liegt unter dem Bild und
+   füllt sie aus. Das Bild selbst nimmt keine Klicks an — bei `contain`
+   reicht es über den sichtbaren Rand hinaus und finge sie sonst ab. */
+.pop-dismiss {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.photo-full {
+  position: relative;
+  width: calc(100vw - 2rem);
+  height: calc(100dvh - 6rem);
+  pointer-events: none;
+}
+
+.photo-full img {
+  object-fit: contain;
+}
+
+/* Seitenleiste: am Telefon eine Schublade im Top-Layer, ab `lg` wieder eine
+   feste Spalte. Dieselbe Auszeichnung für beides, damit die Navigation nur
+   einmal im Baum steht — dafür wird ab der Breite die UA-Regel
+   `[popover]:not(:popover-open) { display: none }` zurückgenommen. */
+.nav-drawer {
+  inset: 0 auto 0 0;
+  width: min(17rem, 82vw);
+  max-width: none;
+  /* die UA-Regel setzt `height: fit-content`; ohne feste Höhe endet die
+     Schublade dort, wo die Navigation aufhört */
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 0;
+  border: none;
+  border-right: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
+  translate: -100% 0;
+  transition:
+    translate var(--d-base) var(--ease),
+    overlay var(--d-base) allow-discrete,
+    display var(--d-base) allow-discrete;
+}
+
+/* `display` bleibt der UA-Regel überlassen; eine Hilfsklasse `flex` im Markup
+   würde sie schlagen und die geschlossene Schublade stünde offen da. */
+.nav-drawer:popover-open {
+  display: flex;
+  translate: 0 0;
+}
+
+@starting-style {
+  .nav-drawer:popover-open {
+    translate: -100% 0;
+  }
+}
+
+@media (min-width: 64rem) {
+  .nav-drawer,
+  .nav-drawer:not(:popover-open) {
+    display: flex;
+    position: static;
+    width: 15rem;
+    height: auto;
+    translate: none;
+    opacity: 1;
+    scale: 1;
+    box-shadow: none;
+  }
+
+  .nav-drawer::backdrop,
+  /* es gibt nichts mehr zu schließen, sobald die Schublade eine Spalte ist.
+     `lg:hidden` käme hier nicht durch: `.btn` steht ausserhalb der Ebenen und
+     schlägt damit jede Hilfsklasse aus `@layer utilities`. */
+  .drawer-close {
+    display: none;
+  }
+}
+
+/* Bildfläche, die sich anfühlt wie ein Knopf, ohne wie einer auszusehen */
+.photo-btn {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--raised);
+  cursor: zoom-in;
+  overflow: hidden;
+  transition:
+    border-color var(--d-base) var(--ease),
+    transform var(--d-base) var(--ease);
+}
+
+@media (hover: hover) {
+  .photo-btn:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-1px);
+  }
+}
+
+.photo-btn img {
+  display: block;
+}
+
+/* ============================================================
+   18. Bewegung reduzieren — Transformationen abschalten,
        nicht nur die Dauer auf 0 setzen (sonst springt es hart).
        Jede neue Flächen- oder Knopfklasse gehört in diese Listen.
    ============================================================ */
@@ -602,13 +834,27 @@ a {
   .seg-item,
   .field,
   .sticky-top,
+  .pop,
+  .pop::backdrop,
+  .nav-drawer,
+  .nav-drawer::backdrop,
+  .photo-btn,
   body {
     transition: none;
   }
 
   .tile:hover,
   .btn:active,
-  .btn-wide:active {
+  .btn-wide:active,
+  .photo-btn:hover {
     transform: none;
+  }
+
+  .pop:not(:popover-open) {
+    scale: 1;
+  }
+
+  .nav-drawer {
+    translate: none;
   }
 }

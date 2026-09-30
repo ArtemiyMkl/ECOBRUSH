@@ -1,14 +1,16 @@
-import Image from "next/image";
 import Link from "next/link";
 import { PageHeader, Panel } from "@/components/page-header";
+import { Photo } from "@/components/photo";
 import { SegLinks } from "@/components/seg-links";
 import { Kpi, KpiGrid } from "@/components/kpi";
-import { IconChat, IconStar } from "@/components/icons";
+import { IconChat, IconImage, IconSend, IconStar } from "@/components/icons";
 import { getTranslations, type Dictionary } from "@/lib/i18n/server";
 import { createFormatters } from "@/lib/format";
 import { withParams } from "@/lib/period";
 import { getChatHistory, getChats } from "@/lib/ozon/support";
 import { getSellerRating } from "@/lib/ozon/catalog";
+import { sendChatMessage } from "@/lib/ozon/actions";
+import { OZON_LIVE } from "@/lib/ozon/client";
 import type { ChatAuthor, ChatKind } from "@/lib/ozon/types";
 
 function authorLabel(author: ChatAuthor, t: Dictionary): string {
@@ -26,6 +28,7 @@ export default async function CustomersPage({
   const f = createFormatters(locale);
   const params = await searchParams;
   const kind: ChatKind = params.k === "system" ? "system" : "buyer";
+  const sendError = params.e === "keys" || params.e === "send" ? params.e : null;
 
   const [chats, rating] = await Promise.all([getChats(), getSellerRating()]);
 
@@ -160,17 +163,32 @@ export default async function CustomersPage({
                     )}
                     {message.images.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {message.images.map((src) => (
-                          <Image
-                            key={src}
-                            src={src}
-                            alt={t.customers.imageAttachment}
-                            width={96}
-                            height={96}
-                            unoptimized
-                            className="h-24 w-24 rounded-md bg-raised object-cover"
-                          />
-                        ))}
+                        {/* Anhänge liegen hinter der Seller-Anmeldung. Ohne
+                            Schlüssel gäbe es nur ein kaputtes Bild, deshalb
+                            steht hier eine Kachel, die den Grund nennt. */}
+                        {message.images.map((src, index) =>
+                          OZON_LIVE ? (
+                            <Photo
+                              key={src}
+                              id={`chat-${message.id}-${index}`}
+                              src={src}
+                              alt={t.customers.imageAttachment}
+                              size={96}
+                              className="h-24 w-24"
+                              unoptimized
+                              t={t}
+                            />
+                          ) : (
+                            <span
+                              key={src}
+                              title={t.customers.photosNeedKeys}
+                              className="flex h-24 w-24 flex-col items-center justify-center gap-1 rounded-md border border-line bg-raised p-2 text-center text-[0.625rem] leading-tight text-dim"
+                            >
+                              <IconImage className="h-5 w-5" />
+                              {t.customers.imageAttachment}
+                            </span>
+                          ),
+                        )}
                       </div>
                     )}
                     {message.sku && (
@@ -185,6 +203,44 @@ export default async function CustomersPage({
                 </li>
               ))}
             </ol>
+          )}
+
+          {selectedId && kind === "buyer" && (
+            <form
+              action={sendChatMessage}
+              className="mt-4 flex items-end gap-2 border-t border-line2 pt-4"
+            >
+              <input type="hidden" name="chatId" value={selectedId} />
+              <textarea
+                name="text"
+                rows={2}
+                required
+                maxLength={1000}
+                placeholder={t.customers.replyPlaceholder}
+                className="field min-w-0 flex-1 resize-y px-3 py-2 text-sm"
+              />
+              <button
+                type="submit"
+                className="btn btn-accent inline-flex items-center gap-1.5 px-3 py-2 text-sm"
+              >
+                <IconSend className="h-4 w-4" />
+                <span className="max-sm:sr-only">{t.customers.send}</span>
+              </button>
+            </form>
+          )}
+
+          {selectedId && kind === "system" && (
+            <p className="mt-4 border-t border-line2 pt-4 text-xs text-dim">
+              {t.customers.sendOnlyBuyer}
+            </p>
+          )}
+
+          {sendError && (
+            <p className="mt-2 text-xs text-bad" role="status">
+              {sendError === "keys"
+                ? t.customers.sendNoKeys
+                : t.customers.sendFailed}
+            </p>
           )}
         </Panel>
       </div>

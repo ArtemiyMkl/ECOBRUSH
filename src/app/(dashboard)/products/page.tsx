@@ -81,7 +81,7 @@ export default async function ProductsPage({
               range={range}
               keep={{ q: query || undefined, z: zone ?? undefined }}
               t={t}
-              formatDate={f.dayMonthYear}
+              f={f}
             />
             <form className="flex items-center gap-2">
               {zone && <input type="hidden" name="z" value={zone} />}

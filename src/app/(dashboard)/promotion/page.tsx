@@ -122,7 +122,7 @@ export default async function PromotionPage({
             range={range}
             keep={{ s: stateParam }}
             t={t}
-            formatDate={f.dayMonthYear}
+            f={f}
           />
         }
       />

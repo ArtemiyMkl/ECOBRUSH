@@ -3,6 +3,8 @@ import { OZON_LIVE, sellerPost } from "./client";
 import { loadFixture } from "./fixtures";
 import type { ChatAuthor, ChatMessage, ChatSummary } from "./types";
 
+export const CHATS_TAG = "ozon-chats";
+
 type ChatListResponse = {
   chats: {
     unread_count: number;
@@ -18,7 +20,7 @@ type ChatListResponse = {
 export async function getChats(): Promise<ChatSummary[]> {
   "use cache";
   cacheLife("ozon");
-  cacheTag("ozon-chats");
+  cacheTag(CHATS_TAG);
 
   const raw = OZON_LIVE
     ? await sellerPost<ChatListResponse>("/v3/chat/list", {
@@ -98,7 +100,7 @@ function normalize(message: HistoryResponse["messages"][number]): ChatMessage {
 export async function getChatHistory(chatId: string): Promise<ChatMessage[]> {
   "use cache";
   cacheLife("ozon");
-  cacheTag("ozon-chats");
+  cacheTag(CHATS_TAG);
 
   if (!OZON_LIVE) {
     const all =

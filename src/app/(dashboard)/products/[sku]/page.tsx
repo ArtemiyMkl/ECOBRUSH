@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader, Panel } from "@/components/page-header";
+import { Photo } from "@/components/photo";
 import { Kpi, KpiGrid } from "@/components/kpi";
 import { PriceZoneChip } from "@/components/price-zone";
 import { BarList } from "@/components/charts";
@@ -78,7 +78,7 @@ export default async function ProductPage({
               selection={selection}
               range={range}
               t={t}
-              formatDate={f.dayMonthYear}
+              f={f}
             />
           </div>
         }
@@ -119,26 +119,28 @@ export default async function ProductPage({
       <div className="mt-5 grid gap-4 xl:grid-cols-[1fr_1.4fr]">
         <Panel title={t.products.colProduct}>
           {product.image ? (
-            <Image
+            <Photo
+              id="photo-main"
               src={product.image}
               alt={product.name}
-              width={480}
-              height={480}
-              className="w-full rounded-lg object-cover"
+              size={480}
+              className="w-full"
+              t={t}
             />
           ) : (
             <div className="aspect-square w-full rounded-lg bg-raised" />
           )}
           {product.images.length > 1 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {product.images.slice(0, 8).map((src) => (
-                <Image
+              {product.images.slice(0, 8).map((src, index) => (
+                <Photo
                   key={src}
+                  id={`photo-${index}`}
                   src={src}
-                  alt=""
-                  width={56}
-                  height={56}
-                  className="h-14 w-14 rounded-md object-cover"
+                  alt={product.name}
+                  size={56}
+                  className="h-14 w-14"
+                  t={t}
                 />
               ))}
             </div>

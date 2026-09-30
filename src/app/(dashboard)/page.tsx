@@ -134,7 +134,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
               selection={selection}
               range={range}
               t={t}
-              formatDate={f.dayMonthYear}
+              f={f}
             />
           </div>
         }

@@ -5,10 +5,20 @@ import { usePathname } from "next/navigation";
 
 export function SidebarNav({
   items,
+  drawerId,
 }: {
   items: { href: string; label: string }[];
+  drawerId: string;
 }) {
   const pathname = usePathname();
+
+  /** Eine sanfte Navigation baut das Layout nicht neu auf — die Schublade bliebe
+   *  also offen über der Seite liegen, die sie gerade geöffnet hat. Ab `lg` ist
+   *  dasselbe Element eine feste Spalte und gar kein offener Popover. */
+  const closeDrawer = () => {
+    const drawer = document.getElementById(drawerId);
+    if (drawer?.matches(":popover-open")) drawer.hidePopover();
+  };
 
   return (
     <nav className="flex flex-col gap-0.5 p-3">
@@ -23,6 +33,7 @@ export function SidebarNav({
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
+            onClick={closeDrawer}
             className="nav-link px-3 py-2 text-sm"
           >
             {item.label}

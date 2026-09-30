@@ -139,7 +139,7 @@ export default async function AnalyticsPage({
               range={range}
               keep={{ g: granularity }}
               t={t}
-              formatDate={f.dayMonthYear}
+              f={f}
             />
             <SegLinks
               options={GRANULARITIES.map((candidate) => ({

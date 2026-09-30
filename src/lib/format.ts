@@ -68,5 +68,9 @@ export function createFormatters(locale: Locale) {
     dayMonthYear: (value: Date | string) => dayMonthYear.format(new Date(value)),
     monthYear: (value: Date | string) => monthYear.format(new Date(value)),
     dateTime: (value: Date | string) => dateTime.format(new Date(value)),
+    /** Ein Zeitraum in einem Zug. Die Jahreszahl steht nur hinten, wenn beide
+     *  Enden im selben Jahr liegen — zweimal „2026" sagt nichts dazu. */
+    dateSpan: (from: string, to: string) =>
+      `${(from.slice(0, 4) === to.slice(0, 4) ? dayMonth : dayMonthYear).format(new Date(from))} — ${dayMonthYear.format(new Date(to))}`,
   };
 }

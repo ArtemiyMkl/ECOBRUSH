@@ -193,6 +193,58 @@ export function IconRefresh(props: IconProps) {
   );
 }
 
+export function IconCalendar(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <rect x="3.5" y="5" width="17" height="15" rx="3" />
+      <path d="M3.5 10h17M8 3v3.5M16 3v3.5" />
+    </Svg>
+  );
+}
+
+export function IconChevron(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M6 9.5l6 5 6-5" />
+    </Svg>
+  );
+}
+
+export function IconMenu(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </Svg>
+  );
+}
+
+export function IconClose(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M6 6l12 12M18 6L6 18" />
+    </Svg>
+  );
+}
+
+export function IconSend(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 12l16-7.5-4.5 16L11 15z" />
+      <path d="M11 15l9-10.5" />
+    </Svg>
+  );
+}
+
+export function IconImage(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="3" />
+      <path d="M3.5 16l4.5-4.5 4 3.5 3-3 5 5" />
+      <circle cx="9" cy="9.5" r="1.4" />
+    </Svg>
+  );
+}
+
 /** Kleiner Richtungspfeil für Veränderungen — bewusst 12er-Raster, damit er
  *  neben der Prozentzahl nicht wie ein eigenes Symbol wirkt. */
 export function IconTrend({
