@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { EmptyState } from "@/components/page-header";
 
 export type Series = {
@@ -208,6 +209,59 @@ export function LineChart({
   );
 }
 
+/** Eine Kennzahl allein sagt nicht, ob sie steigt. Der Strich unter der Zahl
+ *  trägt keine Achsen — er soll nur die Form des Zeitraums zeigen. */
+export function Sparkline({
+  id,
+  values,
+  color,
+  height = 30,
+}: {
+  id: string;
+  values: number[];
+  color: string;
+  height?: number;
+}) {
+  if (values.length < 2) return null;
+
+  const w = 120;
+  const max = Math.max(...values);
+  const min = Math.min(...values, 0);
+  const span = max - min || 1;
+  const x = (index: number) => (index * w) / (values.length - 1);
+  const y = (value: number) => height - 2 - ((value - min) / span) * (height - 4);
+
+  const line = values
+    .map((v, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`)
+    .join(" ");
+
+  return (
+    <svg
+      viewBox={`0 0 ${w} ${height}`}
+      preserveAspectRatio="none"
+      aria-hidden
+      className="h-8 w-full"
+    >
+      <defs>
+        <linearGradient id={`spark-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={`${line} L${w} ${height} L0 ${height} Z`} fill={`url(#spark-${id})`} />
+      <path
+        d={line}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.5"
+        vectorEffect="non-scaling-stroke"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function Legend({ series }: { series: Pick<Series, "id" | "label" | "color">[] }) {
   return (
     <ul className="flex flex-wrap gap-4">
@@ -298,9 +352,12 @@ export function BarList({
         return (
           <li key={item.id}>
             {item.href ? (
-              <a href={item.href} className="block text-txt no-underline hover:text-acc">
+              <Link
+                href={item.href}
+                className="block text-txt no-underline hover:text-acc"
+              >
                 {body}
-              </a>
+              </Link>
             ) : (
               body
             )}

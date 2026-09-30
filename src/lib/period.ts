@@ -1,8 +1,23 @@
 import type { DailyMetrics, DailySpend } from "@/lib/ozon/types";
 
+/** Ozon liefert UTC, der Verkäufer rechnet in Moskauer Zeit — sonst rutscht
+ *  jeder Abendauftrag in den falschen Tag. `en-CA` schreibt JJJJ-MM-TT. */
+const MOSCOW_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Europe/Moscow",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+export function moscowDay(value: Date | string): string {
+  return MOSCOW_DAY.format(new Date(value));
+}
+
 /** Rollende Fenster zählen vom letzten Tag mit Zahlen zurück, die übrigen
  *  richten sich nach dem Kalender. Die Reihenfolge ist die der Schaltflächen. */
 export const PRESET_KEYS = [
+  "today",
+  "yesterday",
   "7d",
   "30d",
   "90d",
@@ -14,7 +29,9 @@ export const PRESET_KEYS = [
 ] as const;
 
 export type Preset = (typeof PRESET_KEYS)[number];
-export const DEFAULT_PRESET: Preset = "30d";
+/** Der laufende Tag zuerst: die Frage „wie läuft es gerade?“ ist die, die der
+ *  Verkäufer beim Öffnen der Seite stellt. */
+export const DEFAULT_PRESET: Preset = "today";
 
 export type Selection =
   | { kind: "preset"; preset: Preset }
@@ -91,6 +108,12 @@ function presetRange(
   start: string,
 ): { from: string; to: string } {
   switch (preset) {
+    case "today":
+      return { from: anchor, to: anchor };
+    case "yesterday": {
+      const day = shiftDays(anchor, -1);
+      return { from: day, to: day };
+    }
     case "mtd":
       return { from: shiftMonths(anchor, 0), to: anchor };
     case "lastMonth": {
@@ -112,8 +135,10 @@ function presetRange(
   }
 }
 
-/** Voreinstellungen enden am letzten Tag, für den Ozon Zahlen hat — nicht
- *  heute, denn der laufende Tag wird erst nachts abgeschlossen. */
+/** Rollende und kalendarische Fenster enden am letzten Tag, für den Ozon Zahlen
+ *  hat. „Heute“ und „Gestern“ meinen dagegen den Kalender — kurz nach
+ *  Mitternacht hat Ozon für den laufenden Tag noch nichts gebucht, und der
+ *  Knopf soll trotzdem den Tag zeigen, den er verspricht. */
 export function resolveRange(
   selection: Selection,
   series: { date: string }[],
@@ -126,7 +151,11 @@ export function resolveRange(
     };
   }
 
-  const anchor = series.at(-1)?.date ?? new Date().toISOString().slice(0, 10);
+  const today = moscowDay(new Date());
+  const anchor =
+    selection.preset === "today" || selection.preset === "yesterday"
+      ? today
+      : (series.at(-1)?.date ?? today);
   const { from, to } = presetRange(
     selection.preset,
     anchor,

@@ -1,4 +1,5 @@
-import { IconTrend } from "@/components/icons";
+import Link from "next/link";
+import { IconChevron, IconTrend } from "@/components/icons";
 
 /** Bei Rückgaben und Storno ist "mehr" schlecht — die Richtung muss also
  *  pro Kennzahl angegeben werden und darf nicht am Vorzeichen hängen. */
@@ -42,6 +43,8 @@ export function Kpi({
   sub,
   hint,
   footer,
+  chart,
+  href,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -49,14 +52,19 @@ export function Kpi({
   sub?: string;
   hint?: string;
   footer?: React.ReactNode;
+  /** Der Verlauf unter der Zahl — eine Zahl ohne Form sagt nur die Hälfte. */
+  chart?: React.ReactNode;
+  /** Wohin die Kachel führt, wenn sich hinter ihr mehr verbirgt. */
+  href?: string;
 }) {
-  return (
-    <div className="tile p-4">
+  const body = (
+    <>
       <div className="flex items-center gap-1.5 text-dim">
         {icon}
         <span className="text-xs font-medium" title={hint}>
           {label}
         </span>
+        {href && <IconChevron className="ml-auto h-3 w-3 shrink-0 -rotate-90" />}
       </div>
       <p className="mt-2 text-xl font-semibold tracking-tight tabular-nums">
         {value}
@@ -65,7 +73,16 @@ export function Kpi({
         )}
       </p>
       {footer && <div className="mt-1.5">{footer}</div>}
-    </div>
+      {chart && <div className="mt-2 -mb-1">{chart}</div>}
+    </>
+  );
+
+  if (!href) return <div className="tile p-4">{body}</div>;
+
+  return (
+    <Link href={href} className="tile block p-4 no-underline">
+      {body}
+    </Link>
   );
 }
 

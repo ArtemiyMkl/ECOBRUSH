@@ -34,6 +34,8 @@ export default async function ProductsPage({
   const params = await searchParams;
   const query = typeof params.q === "string" ? params.q.trim() : "";
   const zone = parseZone(params.z);
+  // Der Bestandsfilter ist der Weg, den die Warnung auf der Startseite nimmt.
+  const outOnly = params.s === "out";
   const selection = parseSelection(params);
 
   const [products, series] = await Promise.all([getProducts(), getDailySeries()]);
@@ -44,6 +46,11 @@ export default async function ProductsPage({
   const needle = query.toLowerCase();
   const visible = products
     .filter((product) => !zone || product.priceZone === zone)
+    .filter(
+      (product) =>
+        !outOnly ||
+        (!product.isArchived && product.fboStock + product.fbsStock === 0),
+    )
     .filter(
       (product) =>
         !needle ||
@@ -79,12 +86,17 @@ export default async function ProductsPage({
               path="/products"
               selection={selection}
               range={range}
-              keep={{ q: query || undefined, z: zone ?? undefined }}
+              keep={{
+                q: query || undefined,
+                z: zone ?? undefined,
+                s: outOnly ? "out" : undefined,
+              }}
               t={t}
               f={f}
             />
             <form className="flex items-center gap-2">
               {zone && <input type="hidden" name="z" value={zone} />}
+              {outOnly && <input type="hidden" name="s" value="out" />}
               {Object.entries(selectionParams(selection)).map(
                 ([name, value]) =>
                   value && (
@@ -118,11 +130,19 @@ export default async function ProductsPage({
           icon={<IconStock />}
           label={t.kpi.outOfStock}
           value={f.integer(outOfStock.length)}
+          href={withParams("/products", {
+            ...selectionParams(selection),
+            s: "out",
+          })}
         />
         <Kpi
           icon={<IconTag />}
           label={t.products.indexRed}
           value={f.integer(redZone.length)}
+          href={withParams("/products", {
+            ...selectionParams(selection),
+            z: "red",
+          })}
         />
         <Kpi
           icon={<IconPercent />}
@@ -140,7 +160,7 @@ export default async function ProductsPage({
                 q: query || undefined,
               }),
               label: t.common.all,
-              active: zone === null,
+              active: zone === null && !outOnly,
             },
             ...PRICE_ZONES.map((candidate) => ({
               href: withParams("/products", {
@@ -151,6 +171,15 @@ export default async function ProductsPage({
               label: priceZoneLabel(candidate, t),
               active: zone === candidate,
             })),
+            {
+              href: withParams("/products", {
+                ...selectionParams(selection),
+                q: query || undefined,
+                s: "out",
+              }),
+              label: t.kpi.outOfStock,
+              active: outOnly,
+            },
           ]}
         />
         <span className="text-xs text-dim">

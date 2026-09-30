@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageHeader, Panel } from "@/components/page-header";
 import { RangePicker } from "@/components/range-picker";
-import { BarList, Legend, LineChart } from "@/components/charts";
+import { BarList, Legend, LineChart, Sparkline } from "@/components/charts";
 import { Delta, Kpi, KpiGrid, MoreMetrics } from "@/components/kpi";
 import {
   IconAd,
@@ -9,6 +9,7 @@ import {
   IconCancel,
   IconCart,
   IconChat,
+  IconChevron,
   IconGlobe,
   IconPercent,
   IconRevenue,
@@ -24,9 +25,11 @@ import { createFormatters } from "@/lib/format";
 import {
   parseSelection,
   resolveRange,
+  selectionParams,
   spendFor,
   spendPerBucket,
   defaultGranularity,
+  withParams,
 } from "@/lib/period";
 import {
   bucket,
@@ -38,6 +41,7 @@ import {
 import { getProducts, getSellerRating } from "@/lib/ozon/catalog";
 import { getAdSpend } from "@/lib/ozon/marketing";
 import { getChats } from "@/lib/ozon/support";
+import { getPostings, hourlyTotals, ordersWindow } from "@/lib/ozon/orders";
 import { OZON_LIVE } from "@/lib/ozon/client";
 
 export default async function HomePage({ searchParams }: PageProps<"/">) {
@@ -66,6 +70,18 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
   const granularity = defaultGranularity(range.days);
   const rows = bucket(current, granularity);
 
+  // Ein einzelner Tag ist als Punkt keine Entwicklung. Stunden stehen nur in den
+  // Aufträgen, und die reichen vierzehn Tage zurück — für ältere Tage bleibt es
+  // bei der Tagesreihe.
+  const ordersRange = ordersWindow();
+  const hourly =
+    range.days === 1 && range.from >= ordersRange.since.slice(0, 10)
+      ? hourlyTotals(
+          await getPostings(ordersRange.since, ordersRange.to),
+          range.from,
+        )
+      : null;
+
   const spend = spendFor(ads.byDay, current);
   const previousSpend = spendFor(ads.byDay, previous);
   const spendValues = spendPerBucket(rows, ads.byDay, range.to);
@@ -91,31 +107,96 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
     (c) => c.kind === "buyer" && c.unreadCount > 0,
   );
 
+  // Im Stundenmodus gibt es keine Werbeausgaben je Stunde — dort läuft die
+  // zweite Linie über die Stückzahl, die aus denselben Aufträgen kommt.
+  const revenueTrend = hourly
+    ? hourly.map((hour) => hour.revenue)
+    : rows.map((row) => row.revenue);
+  const unitsTrend = hourly
+    ? hourly.map((hour) => hour.units)
+    : rows.map((row) => row.orderedUnits);
+  const drrTrend = rows.map((row, index) =>
+    row.revenue > 0 ? (spendValues[index] / row.revenue) * 100 : 0,
+  );
+
   const chartSeries = [
     {
       id: "revenue",
       label: t.kpi.revenue,
       color: "var(--s-umsatz)",
-      values: rows.map((row) => row.revenue),
+      values: revenueTrend,
       filled: true,
     },
-    {
-      id: "spend",
-      label: t.kpi.adSpend,
-      color: "var(--s-spend)",
-      values: spendValues,
-      axis: "right" as const,
-    },
+    hourly
+      ? {
+          id: "units",
+          label: t.kpi.units,
+          color: "var(--s-roas)",
+          values: unitsTrend,
+          axis: "right" as const,
+        }
+      : {
+          id: "spend",
+          label: t.kpi.adSpend,
+          color: "var(--s-spend)",
+          values: spendValues,
+          axis: "right" as const,
+        },
   ];
 
   const topRevenue = Math.max(...topSkus.map((s) => s.revenue), 1);
 
+  // Jede Warnung führt auf die Liste, die sie meint — eine Zahl ohne Weg dahin
+  // ist keine Information, nur ein Schreck.
   const alerts = [
-    outOfStock.length > 0 && `${outOfStock.length} ${t.home.alertOutOfStock}`,
-    redZone.length > 0 && `${redZone.length} ${t.home.alertRedZone}`,
-    unreadBuyerChats.length > 0 &&
-      `${unreadBuyerChats.length} ${t.home.alertUnread}`,
-  ].filter((value): value is string => Boolean(value));
+    outOfStock.length > 0 && {
+      href: withParams("/products", { s: "out" }),
+      label: `${outOfStock.length} ${t.home.alertOutOfStock}`,
+    },
+    redZone.length > 0 && {
+      href: withParams("/products", { z: "red" }),
+      label: `${redZone.length} ${t.home.alertRedZone}`,
+    },
+    unreadBuyerChats.length > 0 && {
+      href: "/customers",
+      label: `${unreadBuyerChats.length} ${t.home.alertUnread}`,
+    },
+  ].filter((alert): alert is { href: string; label: string } => Boolean(alert));
+
+  const period = selectionParams(selection);
+  const analyticsHref = withParams("/analytics", period);
+  const promotionHref = withParams("/promotion", period);
+
+  const stats = [
+    {
+      id: "rating",
+      icon: <IconStar />,
+      label: t.kpi.rating,
+      value: f.decimal(rating.productScore),
+      href: null,
+    },
+    {
+      id: "localization",
+      icon: <IconGlobe />,
+      label: t.kpi.localization,
+      value: f.percent(rating.localizationPercent),
+      href: null,
+    },
+    {
+      id: "stock",
+      icon: <IconStock />,
+      label: t.kpi.outOfStock,
+      value: f.integer(outOfStock.length),
+      href: withParams("/products", { s: "out" }),
+    },
+    {
+      id: "chats",
+      icon: <IconChat />,
+      label: t.kpi.unreadChats,
+      value: f.integer(unreadBuyerChats.length),
+      href: "/customers",
+    },
+  ];
 
   const vs = t.common.vsPrevious;
 
@@ -152,6 +233,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
           icon={<IconRevenue />}
           label={t.kpi.revenue}
           value={f.money(currentTotal.revenue)}
+          href={analyticsHref}
           footer={
             <Delta
               points={deltaPercent(currentTotal.revenue, previousTotal.revenue)}
@@ -159,11 +241,19 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
               title={vs}
             />
           }
+          chart={
+            <Sparkline
+              id="revenue"
+              values={revenueTrend}
+              color="var(--s-umsatz)"
+            />
+          }
         />
         <Kpi
           icon={<IconUnits />}
           label={t.kpi.units}
           value={f.integer(currentTotal.orderedUnits)}
+          href={analyticsHref}
           footer={
             <Delta
               points={deltaPercent(
@@ -174,11 +264,15 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
               title={vs}
             />
           }
+          chart={
+            <Sparkline id="units" values={unitsTrend} color="var(--s-roas)" />
+          }
         />
         <Kpi
           icon={<IconAd />}
           label={t.kpi.adSpend}
           value={f.money(spend)}
+          href={promotionHref}
           footer={
             <Delta
               points={deltaPercent(spend, previousSpend)}
@@ -187,12 +281,16 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
               title={vs}
             />
           }
+          chart={
+            <Sparkline id="spend" values={spendValues} color="var(--s-spend)" />
+          }
         />
         <Kpi
           icon={<IconPercent />}
           label={t.kpi.drr}
           hint={t.kpi.drrHint}
           value={f.percent(drr)}
+          href={promotionHref}
           footer={
             <Delta
               points={deltaPercent(drr, previousDrr)}
@@ -200,6 +298,9 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
               format={f.delta}
               title={vs}
             />
+          }
+          chart={
+            <Sparkline id="drr" values={drrTrend} color="var(--s-spend)" />
           }
         />
       </KpiGrid>
@@ -311,15 +412,27 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       </MoreMetrics>
 
       <div className="mt-5 grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-        <Panel title={t.home.chartTitle} aside={<Legend series={chartSeries} />}>
+        <Panel
+          title={hourly ? t.home.chartTitleHours : t.home.chartTitle}
+          aside={<Legend series={chartSeries} />}
+        >
           <LineChart
-            labels={rows.map((row) => row.date)}
+            labels={hourly ? hourly.map((hour) => hour.hour) : rows.map((row) => row.date)}
             series={chartSeries}
             formatLeft={f.moneyCompact}
-            formatRight={f.moneyCompact}
-            formatLabel={granularity === "month" ? f.monthYear : f.dayMonth}
+            formatRight={hourly ? f.compact : f.moneyCompact}
+            formatLabel={
+              hourly
+                ? (label) => label
+                : granularity === "month"
+                  ? f.monthYear
+                  : f.dayMonth
+            }
             empty={t.common.noData}
           />
+          {hourly && (
+            <p className="mt-2 text-xs text-dim">{t.home.chartHoursNote}</p>
+          )}
         </Panel>
 
         <div className="flex flex-col gap-4">
@@ -327,11 +440,17 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
             {alerts.length === 0 ? (
               <p className="text-sm text-dim">{t.home.allGood}</p>
             ) : (
-              <ul className="space-y-2">
+              <ul className="-mx-1 space-y-0.5">
                 {alerts.map((alert) => (
-                  <li key={alert} className="flex items-start gap-2 text-sm">
-                    <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
-                    <span>{alert}</span>
+                  <li key={alert.href}>
+                    <Link
+                      href={alert.href}
+                      className="nav-link flex items-start gap-2 px-2 py-1.5 text-sm no-underline"
+                    >
+                      <IconAlert className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
+                      <span className="text-txt">{alert.label}</span>
+                      <IconChevron className="mt-0.5 ml-auto h-3 w-3 shrink-0 -rotate-90" />
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -339,44 +458,41 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
           </Panel>
 
           <Panel title={t.kpi.rating}>
-            <dl className="space-y-2.5 text-sm">
-              <div className="flex items-center justify-between gap-3">
-                <dt className="flex items-center gap-1.5 text-dim">
-                  <IconStar />
-                  {t.kpi.rating}
-                </dt>
-                <dd className="font-semibold tabular-nums">
-                  {f.decimal(rating.productScore)}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                <dt className="flex items-center gap-1.5 text-dim">
-                  <IconGlobe />
-                  {t.kpi.localization}
-                </dt>
-                <dd className="font-semibold tabular-nums">
-                  {f.percent(rating.localizationPercent)}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                <dt className="flex items-center gap-1.5 text-dim">
-                  <IconStock />
-                  {t.kpi.outOfStock}
-                </dt>
-                <dd className="font-semibold tabular-nums">
-                  {f.integer(outOfStock.length)}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                <dt className="flex items-center gap-1.5 text-dim">
-                  <IconChat />
-                  {t.kpi.unreadChats}
-                </dt>
-                <dd className="font-semibold tabular-nums">
-                  {f.integer(unreadBuyerChats.length)}
-                </dd>
-              </div>
-            </dl>
+            <ul className="-mx-1 space-y-0.5 text-sm">
+              {stats.map((stat) => {
+                const body = (
+                  <>
+                    <span className="flex items-center gap-1.5 text-dim">
+                      {stat.icon}
+                      {stat.label}
+                    </span>
+                    <span className="ml-auto font-semibold tabular-nums text-txt">
+                      {stat.value}
+                    </span>
+                    {stat.href && (
+                      <IconChevron className="h-3 w-3 shrink-0 -rotate-90 text-dim" />
+                    )}
+                  </>
+                );
+
+                return (
+                  <li key={stat.id}>
+                    {stat.href ? (
+                      <Link
+                        href={stat.href}
+                        className="nav-link flex items-center gap-2 px-2 py-1.5 no-underline"
+                      >
+                        {body}
+                      </Link>
+                    ) : (
+                      <div className="flex items-center gap-2 px-2 py-1.5">
+                        {body}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
           </Panel>
         </div>
       </div>
@@ -385,7 +501,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         title={t.home.topProducts}
         className="mt-4"
         aside={
-          <Link href="/products" className="text-xs">
+          <Link href={withParams("/products", period)} className="text-xs">
             {t.common.open}
           </Link>
         }
@@ -396,6 +512,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
             label: sku.name,
             value: f.money(sku.revenue),
             share: sku.revenue / topRevenue,
+            href: withParams(`/products/${sku.sku}`, period),
           }))}
         />
       </Panel>

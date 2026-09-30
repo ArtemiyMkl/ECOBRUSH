@@ -34,7 +34,7 @@ export function SidebarNav({
             href={item.href}
             aria-current={isActive ? "page" : undefined}
             onClick={closeDrawer}
-            className="nav-link px-3 py-2 text-sm"
+            className="nav-link block px-3 py-2 text-sm"
           >
             {item.label}
           </Link>

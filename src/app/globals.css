@@ -315,8 +315,9 @@ a {
 /* ============================================================
    8. Navigation
    ============================================================ */
+/* Ohne `display`: die Regel steht außerhalb der Tailwind-Ebenen und würde eine
+   Utility wie `flex` sonst überstimmen — Zeilen mit Wert rechts brächen um. */
 .nav-link {
-  display: block;
   border-radius: var(--r-md);
   color: var(--dim);
   transition:

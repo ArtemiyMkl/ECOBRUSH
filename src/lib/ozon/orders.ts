@@ -1,7 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { OZON_LIVE, sellerPost } from "./client";
 import { loadFixture } from "./fixtures";
-import { shiftDays } from "@/lib/period";
+import { moscowDay, shiftDays } from "@/lib/period";
 import type { Posting, PostingGroup, PostingItem, PostingScheme } from "./types";
 
 export const ORDERS_TAG = "ozon-orders";
@@ -9,19 +9,6 @@ export const ORDERS_TAG = "ozon-orders";
 /** Wie weit die Liste zurückreicht. Kurz, weil der Abschnitt den laufenden
  *  Betrieb zeigt — die Historie steht in der Analytik. */
 const LOOKBACK_DAYS = 14;
-
-/** Ozon liefert UTC, der Verkäufer rechnet in Moskauer Zeit — sonst rutscht
- *  jeder Abendauftrag in den falschen Tag. `en-CA` schreibt JJJJ-MM-TT. */
-const MOSCOW_DAY = new Intl.DateTimeFormat("en-CA", {
-  timeZone: "Europe/Moscow",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
-
-export function moscowDay(value: Date | string): string {
-  return MOSCOW_DAY.format(new Date(value));
-}
 
 /** Tagesgrenzen statt Zeitstempel: so bleibt der Cache-Schlüssel den Tag über
  *  gleich, anstatt bei jeder Anfrage ein neuer zu sein. */
@@ -31,6 +18,46 @@ export function ordersWindow(): { since: string; to: string } {
     since: `${shiftDays(today, -(LOOKBACK_DAYS - 1))}T00:00:00.000Z`,
     to: `${shiftDays(today, 1)}T00:00:00.000Z`,
   };
+}
+
+const MOSCOW_HOUR = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Moscow",
+  hour: "2-digit",
+  hour12: false,
+});
+
+export type HourlyTotals = { hour: string; revenue: number; units: number };
+
+/** Der Tagesverlauf kommt aus den Aufträgen: die Analytik kennt keine Stunden,
+ *  und ein einzelner Tag ist als eine Zahl keine Entwicklung. Für heute endet
+ *  die Reihe an der laufenden Stunde — sonst zöge sich eine Nulllinie bis
+ *  Mitternacht und die Kurve sähe aus wie ein Einbruch. */
+export function hourlyTotals(
+  postings: Posting[],
+  day: string,
+): HourlyTotals[] {
+  const now = new Date();
+  const lastHour =
+    day === moscowDay(now) ? Number(MOSCOW_HOUR.format(now)) : 23;
+
+  const rows: HourlyTotals[] = Array.from(
+    { length: lastHour + 1 },
+    (_, hour) => ({
+      hour: `${String(hour).padStart(2, "0")}:00`,
+      revenue: 0,
+      units: 0,
+    }),
+  );
+
+  for (const posting of postings) {
+    if (moscowDay(posting.placedAt) !== day) continue;
+    const row = rows[Number(MOSCOW_HOUR.format(new Date(posting.placedAt)))];
+    if (!row) continue;
+    row.revenue += posting.total;
+    row.units += posting.units;
+  }
+
+  return rows;
 }
 
 const GROUPS: Record<PostingGroup, string[]> = {

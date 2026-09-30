@@ -10,9 +10,9 @@ import {
 } from "@/components/icons";
 import { getTranslations, type Dictionary } from "@/lib/i18n/server";
 import { createFormatters } from "@/lib/format";
-import { withParams } from "@/lib/period";
+import { moscowDay, withParams } from "@/lib/period";
 import { refreshOrders } from "@/lib/ozon/actions";
-import { getPostings, moscowDay, ordersWindow } from "@/lib/ozon/orders";
+import { getPostings, ordersWindow } from "@/lib/ozon/orders";
 import type { Posting, PostingGroup } from "@/lib/ozon/types";
 
 const GROUP_ORDER: PostingGroup[] = ["new", "shipping", "done", "cancelled"];

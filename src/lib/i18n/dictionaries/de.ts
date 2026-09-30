@@ -37,6 +37,8 @@ const de: Dictionary = {
   },
   range: {
     title: "Zeitraum",
+    today: "Heute",
+    yesterday: "Gestern",
     "7d": "7 Tage",
     "30d": "30 Tage",
     "90d": "90 Tage",
@@ -79,6 +81,8 @@ const de: Dictionary = {
     title: "Übersicht",
     subtitle: "Kennzahlen des Shops im gewählten Zeitraum",
     chartTitle: "Umsatz und Werbung",
+    chartTitleHours: "Umsatz nach Stunden",
+    chartHoursNote: "Aus den Bestellungen, Moskauer Zeit",
     topProducts: "Top-Artikel nach Umsatz",
     attention: "Braucht Aufmerksamkeit",
     allGood: "Alles in Ordnung — nichts Dringendes",

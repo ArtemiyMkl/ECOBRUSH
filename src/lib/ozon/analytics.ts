@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { shiftDays, type Granularity, type Range } from "@/lib/period";
+import { moscowDay, shiftDays, type Granularity, type Range } from "@/lib/period";
 import { OZON_LIVE, sellerPost } from "./client";
 import { loadFixture } from "./fixtures";
 import {
@@ -37,12 +37,6 @@ function toMetrics(values: number[]): Metrics {
   };
 }
 
-function isoDay(offsetDays: number): string {
-  const d = new Date();
-  d.setUTCDate(d.getUTCDate() - offsetDays);
-  return d.toISOString().slice(0, 10);
-}
-
 function hasActivity(rows: DailyMetrics[]): boolean {
   return rows.some((row) => row.revenue > 0 || row.views > 0);
 }
@@ -64,10 +58,11 @@ export async function getDailySeries(): Promise<DailyMetrics[]> {
   }
 
   const series: DailyMetrics[] = [];
-  // Ozon schließt den laufenden Tag erst nachts ab, deshalb endet die Reihe
-  // gestern. Rückwärts, bis eine Jahresscheibe leer bleibt — so braucht es
+  // Der laufende Tag gehört dazu: Ozon bucht ihn zwar erst nachts endgültig ab,
+  // liefert aber laufend Zwischenstände — und genau die will der Verkäufer
+  // morgens sehen. Rückwärts, bis eine Jahresscheibe leer bleibt, so braucht es
   // keinen fest verdrahteten Kontostart.
-  let to = isoDay(1);
+  let to = moscowDay(new Date());
 
   for (let chunk = 0; chunk < MAX_CHUNKS; chunk++) {
     const from = shiftDays(to, -CHUNK_DAYS);
