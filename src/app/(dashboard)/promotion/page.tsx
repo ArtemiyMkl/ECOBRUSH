@@ -174,6 +174,7 @@ export default async function PromotionPage({
           formatLeft={f.moneyCompact}
           formatRight={f.moneyCompact}
           formatLabel={granularity === "month" ? f.monthYear : f.dayMonth}
+          empty={t.common.noData}
         />
       </Panel>
 

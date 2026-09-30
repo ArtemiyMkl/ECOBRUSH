@@ -284,6 +284,7 @@ export default async function AnalyticsPage({
             series={traffic}
             formatLeft={f.compact}
             formatLabel={granularity === "month" ? f.monthYear : f.dayMonth}
+            empty={t.common.noData}
           />
         </Panel>
 
@@ -303,6 +304,7 @@ export default async function AnalyticsPage({
           formatLeft={f.integer}
           formatRight={f.percent}
           formatLabel={granularity === "month" ? f.monthYear : f.dayMonth}
+          empty={t.common.noData}
         />
       </Panel>
 

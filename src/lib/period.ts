@@ -1,17 +1,19 @@
 import type { DailyMetrics, DailySpend } from "@/lib/ozon/types";
 
-/** Voreinstellungen in Tagen; `all` hat keine feste Länge und richtet sich
- *  nach der Datenreihe. */
-export const PRESETS = {
-  "7d": 7,
-  "30d": 30,
-  "90d": 90,
-  "365d": 365,
-  all: null,
-} as const;
+/** Rollende Fenster zählen vom letzten Tag mit Zahlen zurück, die übrigen
+ *  richten sich nach dem Kalender. Die Reihenfolge ist die der Schaltflächen. */
+export const PRESET_KEYS = [
+  "7d",
+  "30d",
+  "90d",
+  "mtd",
+  "lastMonth",
+  "ytd",
+  "lastYear",
+  "all",
+] as const;
 
-export type Preset = keyof typeof PRESETS;
-export const PRESET_KEYS = Object.keys(PRESETS) as Preset[];
+export type Preset = (typeof PRESET_KEYS)[number];
 export const DEFAULT_PRESET: Preset = "30d";
 
 export type Selection =
@@ -71,6 +73,45 @@ function dayCount(from: string, to: string): number {
   return Math.floor(ms / 86_400_000) + 1;
 }
 
+/** Vom Monatsersten aus gerechnet, damit kein 31. in einen kurzen Monat
+ *  überläuft. */
+function shiftMonths(date: string, months: number): string {
+  const d = new Date(`${date.slice(0, 7)}-01T00:00:00Z`);
+  d.setUTCMonth(d.getUTCMonth() + months);
+  return d.toISOString().slice(0, 10);
+}
+
+function monthEnd(date: string): string {
+  return shiftDays(shiftMonths(date, 1), -1);
+}
+
+function presetRange(
+  preset: Preset,
+  anchor: string,
+  start: string,
+): { from: string; to: string } {
+  switch (preset) {
+    case "mtd":
+      return { from: shiftMonths(anchor, 0), to: anchor };
+    case "lastMonth": {
+      const from = shiftMonths(anchor, -1);
+      return { from, to: monthEnd(from) };
+    }
+    case "ytd":
+      return { from: `${anchor.slice(0, 4)}-01-01`, to: anchor };
+    case "lastYear": {
+      const year = Number(anchor.slice(0, 4)) - 1;
+      return { from: `${year}-01-01`, to: `${year}-12-31` };
+    }
+    case "all":
+      return { from: start, to: anchor };
+    default: {
+      const length = Number.parseInt(preset, 10);
+      return { from: shiftDays(anchor, -(length - 1)), to: anchor };
+    }
+  }
+}
+
 /** Voreinstellungen enden am letzten Tag, für den Ozon Zahlen hat — nicht
  *  heute, denn der laufende Tag wird erst nachts abgeschlossen. */
 export function resolveRange(
@@ -85,9 +126,12 @@ export function resolveRange(
     };
   }
 
-  const to = series.at(-1)?.date ?? new Date().toISOString().slice(0, 10);
-  const length = PRESETS[selection.preset];
-  const from = length === null ? (series[0]?.date ?? to) : shiftDays(to, -(length - 1));
+  const anchor = series.at(-1)?.date ?? new Date().toISOString().slice(0, 10);
+  const { from, to } = presetRange(
+    selection.preset,
+    anchor,
+    series[0]?.date ?? anchor,
+  );
 
   return { from, to, days: dayCount(from, to) };
 }

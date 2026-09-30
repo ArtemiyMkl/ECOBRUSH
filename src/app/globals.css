@@ -493,6 +493,7 @@ a {
    ============================================================ */
 .seg {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 2px;
   padding: 2px;
   background: var(--raised);

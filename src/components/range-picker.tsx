@@ -42,7 +42,9 @@ export function RangePicker({
         }))}
       />
 
-      <details className="relative">
+      {/* Aufgeklappt nimmt der Block die ganze Zeile: als überlagertes Feld
+          liefe er je nach Umbruch der Schaltflächen aus dem Bild. */}
+      <details className="open:w-full">
         {/* `.seg` ist inline-flex — das unterdrückt das Aufklapp-Dreieck. */}
         <summary className="seg cursor-pointer list-none">
           <span
@@ -57,7 +59,7 @@ export function RangePicker({
 
         <form
           action={path}
-          className="panel absolute right-0 z-20 mt-2 flex w-max items-end gap-2 p-3"
+          className="panel mt-2 flex w-max max-w-full flex-wrap items-end gap-2 p-3"
         >
           {Object.entries(keep).map(
             ([name, value]) =>

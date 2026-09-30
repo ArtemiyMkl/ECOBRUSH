@@ -1,3 +1,5 @@
+import { EmptyState } from "@/components/page-header";
+
 export type Series = {
   id: string;
   label: string;
@@ -42,6 +44,7 @@ export function LineChart({
   formatLeft,
   formatRight,
   formatLabel,
+  empty,
 }: {
   labels: string[];
   series: Series[];
@@ -49,9 +52,11 @@ export function LineChart({
   formatLeft: (value: number) => string;
   formatRight?: (value: number) => string;
   formatLabel: (label: string) => string;
+  /** Meldung für Zeiträume, in denen Ozon noch keine Zahlen hat. */
+  empty: string;
 }) {
   const count = labels.length;
-  if (count === 0) return null;
+  if (count === 0) return <EmptyState>{empty}</EmptyState>;
 
   const maxOf = (axis: "left" | "right") =>
     niceMax(
