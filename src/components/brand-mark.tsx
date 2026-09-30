@@ -1,10 +1,15 @@
+import Image from "next/image";
+
 export function BrandMark({ className = "" }: { className?: string }) {
   return (
-    <span
+    <Image
+      src="/ecobrush-mark.png"
+      alt=""
       aria-hidden
-      className={`flex items-center justify-center rounded-md bg-brand font-bold text-white ${className}`}
-    >
-      E
-    </span>
+      width={64}
+      height={64}
+      priority
+      className={`shrink-0 object-contain ${className}`}
+    />
   );
 }

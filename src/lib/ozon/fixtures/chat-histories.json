@@ -1,0 +1,254 @@
+{
+ "4ed0e4da-0aec-4005-9279-9247a27e0b57": {
+  "has_next": false,
+  "messages": [
+   {
+    "message_id": 3000000454338539000,
+    "user": {
+     "id": "203748171",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-29T15:39:56.801766Z",
+    "is_read": true,
+    "data": [
+     "Здравствуйте! У меня вопрос по вашему товару \"Щетка для бороды и усов с натуральным волокном тампико 55 пучков ECOBRUSH Р/181\", Нeдaвнo выбиpaл тoвap и нaткнyлcя нa вaшy кapтoчкy. Oбpaтил внимaниe, чтo eё мoжнo ycилить визyaльнo. Пoдxoд пoднятия CTR y мeня чepeз Аi фoтoceccии, нa дaнный мoмeнт этo oчeнь cильнo выдeляeт кapтoчкy и пoднимaeт CTR. Мoгy пoкaзaть нa пpимepe вaшeгo тoвapa"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": false
+   },
+   {
+    "message_id": 3000000454338538000,
+    "user": {
+     "id": "203748171",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-29T15:39:56.694205Z",
+    "is_read": true,
+    "data": [
+     "![](https://api-seller.ozon.ru/v2/chat/file/messenger-rotated-3/87c4df7e-6637-4121-beae-bc0020fa8ef0.jpg)"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": true,
+    "moderate_image_status": "SUCCESS"
+   },
+   {
+    "message_id": 3000000454338537500,
+    "user": {
+     "id": "203748171",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-29T15:39:56.605302Z",
+    "is_read": true,
+    "data": [
+     "![](https://api-seller.ozon.ru/v2/chat/file/chat-facade/in%20moderation.jpg)"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": true,
+    "moderate_image_status": "FAILED"
+   },
+   {
+    "message_id": 3000000454338537000,
+    "user": {
+     "id": "203748171",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-29T15:39:56.463487Z",
+    "is_read": true,
+    "data": [
+     ""
+    ],
+    "context": {
+     "sku": "1928670309",
+     "order_number": ""
+    },
+    "is_image": false
+   }
+  ]
+ },
+ "0629e74f-dd75-48fe-bd32-247fbbf512a3": {
+  "has_next": false,
+  "messages": [
+   {
+    "message_id": 3000000453222367000,
+    "user": {
+     "id": "36736169",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-26T19:14:20.387369Z",
+    "is_read": true,
+    "data": [
+     "",
+     "Здравствуйте! У меня вопрос по вашему товару \"Щётка швабра деревянная с длинным черенком, для пола (синтетическое волокно) 106 пучков ШЧ/628/106\", артикул ШЧ/628/106."
+    ],
+    "context": {
+     "sku": "4561626576",
+     "order_number": ""
+    },
+    "is_image": false
+   }
+  ]
+ },
+ "e7ce212b-bef1-49d6-9b3f-da8e566006af": {
+  "has_next": false,
+  "messages": [
+   {
+    "message_id": 3000000452475927600,
+    "user": {
+     "id": "173614402",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-24T20:49:17.605552Z",
+    "is_read": true,
+    "data": [
+     "",
+     "Здравствуйте! У меня вопрос по вашему товару \"Щётка для обуви с натуральной щетиной кабана 172 пучка ECOBRUSH Б/028\", артикул Б/028."
+    ],
+    "context": {
+     "sku": "1922903341",
+     "order_number": ""
+    },
+    "is_image": false
+   }
+  ]
+ },
+ "2a38ed48-a0ff-4c17-bf4f-a0746d30e405": {
+  "has_next": false,
+  "messages": [
+   {
+    "message_id": 3000000451101452000,
+    "user": {
+     "id": "208556235",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-21T10:24:17.754192Z",
+    "is_read": true,
+    "data": [
+     "Добрый день, я Вероника, занимаюсь закупкой и доставкой груза из Китая, предлагаю Вам сотрудничество.\nЯ проверяю фабрику до контракта, высылаю образцы, контролирую каждый этап. Вы получаете гарантию, что брака не будет.\nУ нас тарифы от 1.6$ кг\nВ настоящее время у нас маршруты: TИР(13-15дней), Восточная прямая линия, без перевалки.(15–18дней), и т.д.\nИнтересует ли Вас?"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": false
+   }
+  ]
+ },
+ "4bd6bd7c-b8be-45ed-b00b-b080ce54bb3e": {
+  "has_next": false,
+  "messages": [
+   {
+    "message_id": 3000000450968090600,
+    "user": {
+     "id": "81845707",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-20T21:34:49.700574Z",
+    "is_read": true,
+    "data": [
+     "![](https://api-seller.ozon.ru/v2/chat/file/messenger-rotated-3/0759269c-fc13-4fed-980e-cbb36390d176.jpg)"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": true,
+    "moderate_image_status": "SUCCESS"
+   },
+   {
+    "message_id": 3000000450968034300,
+    "user": {
+     "id": "buyer_seller_bot",
+     "type": "ChatBot"
+    },
+    "created_at": "2026-09-20T21:33:30.436980Z",
+    "is_read": true,
+    "data": [
+     "Спасибо за отзыв, дождитесь ответа продавца"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": false
+   },
+   {
+    "message_id": 3000000450968034000,
+    "user": {
+     "id": "81845707",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-20T21:33:29.880360Z",
+    "is_read": true,
+    "data": [
+     "Нет, жду ответа продавца"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": false
+   },
+   {
+    "message_id": 3000000450967985000,
+    "user": {
+     "id": "buyer_seller_bot",
+     "type": "ChatBot"
+    },
+    "created_at": "2026-09-20T21:32:21.272545Z",
+    "is_read": true,
+    "data": [
+     "Вам помог ответ?  \n  \nПродавец увидит ваш вопрос и может дополнить ответ."
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": false
+   },
+   {
+    "message_id": 3000000450967984600,
+    "user": {
+     "id": "buyer_seller_bot",
+     "type": "ChatBot"
+    },
+    "created_at": "2026-09-20T21:32:20.754146Z",
+    "is_read": true,
+    "data": [
+     "Если не хватает части товара или вы не понимаете инструкцию по эксплуатации, дождитесь ответа продавца.  \n  \nЕсли вам пришел бракованный или не тот товар, вы можете создать [заявку на возврат](https://www.ozon.ru/my/returnCreation/items).  \n  \n[Подробнее о возврате товаров](https://docs.ozon.ru/common/otmena-i-vozvrat-zakaza/kak-vernut-tovar/?country=RU)"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": ""
+    },
+    "is_image": false
+   },
+   {
+    "message_id": 3000000450967984000,
+    "user": {
+     "id": "81845707",
+     "type": "Customer"
+    },
+    "created_at": "2026-09-20T21:32:20.174982Z",
+    "is_read": true,
+    "data": [
+     "81845707-0042-1",
+     "Здравствуйте. Щетка для сухого массажа лопнула. Можно вернуть?"
+    ],
+    "context": {
+     "sku": "",
+     "order_number": "81845707-0042"
+    },
+    "is_image": false
+   }
+  ]
+ }
+}

@@ -1,0 +1,1029 @@
+{
+ "result": {
+  "items": [
+   {
+    "product_id": 1470658987,
+    "offer_id": "Б/006",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922835058
+   },
+   {
+    "product_id": 1470692376,
+    "offer_id": "Б/007",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922863586
+   },
+   {
+    "product_id": 1470740201,
+    "offer_id": "Б/054",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922902952
+   },
+   {
+    "product_id": 1470740214,
+    "offer_id": "Б/052",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903127
+   },
+   {
+    "product_id": 1470740217,
+    "offer_id": "Б/050",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903124
+   },
+   {
+    "product_id": 1470740218,
+    "offer_id": "Б/022",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903014
+   },
+   {
+    "product_id": 1470740222,
+    "offer_id": "Б/026",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903386
+   },
+   {
+    "product_id": 1470740231,
+    "offer_id": "Б/024",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903413
+   },
+   {
+    "product_id": 1470740233,
+    "offer_id": "Б/029",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903277
+   },
+   {
+    "product_id": 1470740234,
+    "offer_id": "Б/092",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903333
+   },
+   {
+    "product_id": 1470740235,
+    "offer_id": "Б/023",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903170
+   },
+   {
+    "product_id": 1470740239,
+    "offer_id": "Б/025",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903403
+   },
+   {
+    "product_id": 1470740240,
+    "offer_id": "Б/059",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903129
+   },
+   {
+    "product_id": 1470740241,
+    "offer_id": "Б/021",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903339
+   },
+   {
+    "product_id": 1470740243,
+    "offer_id": "Б/090",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903072
+   },
+   {
+    "product_id": 1470740246,
+    "offer_id": "Б/028",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903341
+   },
+   {
+    "product_id": 1470740253,
+    "offer_id": "Б/053",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903144
+   },
+   {
+    "product_id": 1470740261,
+    "offer_id": "Б/058",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903135
+   },
+   {
+    "product_id": 1470740266,
+    "offer_id": "Б/056",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903342
+   },
+   {
+    "product_id": 1470740267,
+    "offer_id": "Б/061",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903405
+   },
+   {
+    "product_id": 1470740269,
+    "offer_id": "Б/057",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903265
+   },
+   {
+    "product_id": 1470740274,
+    "offer_id": "Б/055",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1922903392
+   },
+   {
+    "product_id": 1471071333,
+    "offer_id": "О/140",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174290
+   },
+   {
+    "product_id": 1471071335,
+    "offer_id": "О/113",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174449
+   },
+   {
+    "product_id": 1471071339,
+    "offer_id": "О/144",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174395
+   },
+   {
+    "product_id": 1471071341,
+    "offer_id": "О/008",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174311
+   },
+   {
+    "product_id": 1471071342,
+    "offer_id": "Р/203",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174392
+   },
+   {
+    "product_id": 1471071343,
+    "offer_id": "О/117",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174372
+   },
+   {
+    "product_id": 1471071344,
+    "offer_id": "О/112",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174401
+   },
+   {
+    "product_id": 1471071346,
+    "offer_id": "О/149",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174445
+   },
+   {
+    "product_id": 1471071347,
+    "offer_id": "Р/97",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174358
+   },
+   {
+    "product_id": 1471071348,
+    "offer_id": "Р/76",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174397
+   },
+   {
+    "product_id": 1471071349,
+    "offer_id": "Р/202",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174385
+   },
+   {
+    "product_id": 1471071354,
+    "offer_id": "Р/086",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174389
+   },
+   {
+    "product_id": 1471071355,
+    "offer_id": "О/148",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174412
+   },
+   {
+    "product_id": 1471071356,
+    "offer_id": "О/121",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174408
+   },
+   {
+    "product_id": 1471071357,
+    "offer_id": "О/147",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174364
+   },
+   {
+    "product_id": 1471071358,
+    "offer_id": "Р/77",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174436
+   },
+   {
+    "product_id": 1471071360,
+    "offer_id": "Р/198",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174402
+   },
+   {
+    "product_id": 1471071361,
+    "offer_id": "О/110",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174318
+   },
+   {
+    "product_id": 1471071362,
+    "offer_id": "Р/085",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [
+     {
+      "quant_code": "Р/085_(квант)",
+      "quant_size": 2
+     }
+    ],
+    "sku": 1923174367
+   },
+   {
+    "product_id": 1471071365,
+    "offer_id": "О/115",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174391
+   },
+   {
+    "product_id": 1471071366,
+    "offer_id": "О/118",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174435
+   },
+   {
+    "product_id": 1471071368,
+    "offer_id": "Р/195",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174424
+   },
+   {
+    "product_id": 1471071369,
+    "offer_id": "О/114",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174413
+   },
+   {
+    "product_id": 1471071373,
+    "offer_id": "Р/75",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [
+     {
+      "quant_code": "Р/75_(квант)",
+      "quant_size": 2
+     }
+    ],
+    "sku": 1923174398
+   },
+   {
+    "product_id": 1471071374,
+    "offer_id": "Р/087",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [
+     {
+      "quant_code": "Р/087_(квант)",
+      "quant_size": 2
+     }
+    ],
+    "sku": 1923174349
+   },
+   {
+    "product_id": 1471071377,
+    "offer_id": "Р/96",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [
+     {
+      "quant_code": "Р/96_(квант)",
+      "quant_size": 2
+     }
+    ],
+    "sku": 1923174404
+   },
+   {
+    "product_id": 1471071378,
+    "offer_id": "Р/95",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174325
+   },
+   {
+    "product_id": 1471071382,
+    "offer_id": "Р/200",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1923174416
+   },
+   {
+    "product_id": 1478684808,
+    "offer_id": "К/190",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928549899
+   },
+   {
+    "product_id": 1478684809,
+    "offer_id": "С/190",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928550061
+   },
+   {
+    "product_id": 1478684831,
+    "offer_id": "С/191",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928550021
+   },
+   {
+    "product_id": 1478684861,
+    "offer_id": "С/192",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928550160
+   },
+   {
+    "product_id": 1478684873,
+    "offer_id": "К/191",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928549890
+   },
+   {
+    "product_id": 1478836655,
+    "offer_id": "Р/213",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670402
+   },
+   {
+    "product_id": 1478836656,
+    "offer_id": "Р/192",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670568
+   },
+   {
+    "product_id": 1478836662,
+    "offer_id": "Р/215",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670459
+   },
+   {
+    "product_id": 1478836663,
+    "offer_id": "Р/216",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670500
+   },
+   {
+    "product_id": 1478836664,
+    "offer_id": "Р/242",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670524
+   },
+   {
+    "product_id": 1478836666,
+    "offer_id": "Р/190",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670687
+   },
+   {
+    "product_id": 1478836667,
+    "offer_id": "Р/180",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670692
+   },
+   {
+    "product_id": 1478836672,
+    "offer_id": "Л/150",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670634
+   },
+   {
+    "product_id": 1478836675,
+    "offer_id": "Н/023",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670529
+   },
+   {
+    "product_id": 1478836677,
+    "offer_id": "Н/010",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670571
+   },
+   {
+    "product_id": 1478836684,
+    "offer_id": "Р/181",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670309
+   },
+   {
+    "product_id": 1478836688,
+    "offer_id": "Р/240",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928670710
+   },
+   {
+    "product_id": 1479017488,
+    "offer_id": "МГЛ/280",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824001
+   },
+   {
+    "product_id": 1479017489,
+    "offer_id": "ШС/503",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824214
+   },
+   {
+    "product_id": 1479017493,
+    "offer_id": "М/280",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824066
+   },
+   {
+    "product_id": 1479017494,
+    "offer_id": "МГЭ/190",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824145
+   },
+   {
+    "product_id": 1479017503,
+    "offer_id": "VINIL/002",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824120
+   },
+   {
+    "product_id": 1479017505,
+    "offer_id": "ХО/071",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824081
+   },
+   {
+    "product_id": 1479017508,
+    "offer_id": "VINIL/001",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928823966
+   },
+   {
+    "product_id": 1479017516,
+    "offer_id": "ШС/603",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824184
+   },
+   {
+    "product_id": 1479017517,
+    "offer_id": "Ш/628/106",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824235
+   },
+   {
+    "product_id": 1479017519,
+    "offer_id": "ХО/181",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824220
+   },
+   {
+    "product_id": 1479017523,
+    "offer_id": "МГЭ/280",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824037
+   },
+   {
+    "product_id": 1479017528,
+    "offer_id": "Ш/631",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824207
+   },
+   {
+    "product_id": 1479017536,
+    "offer_id": "Ш/600",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824181
+   },
+   {
+    "product_id": 1479017537,
+    "offer_id": "ШД/160",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824186
+   },
+   {
+    "product_id": 1479017547,
+    "offer_id": "Ш/602",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824370
+   },
+   {
+    "product_id": 1479017548,
+    "offer_id": "ХО/180",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824231
+   },
+   {
+    "product_id": 1479017553,
+    "offer_id": "Ш/628",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824129
+   },
+   {
+    "product_id": 1479017554,
+    "offer_id": "Ш/632",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824224
+   },
+   {
+    "product_id": 1479017557,
+    "offer_id": "Ш/280",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824183
+   },
+   {
+    "product_id": 1479017568,
+    "offer_id": "Ш/500",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824302
+   },
+   {
+    "product_id": 1479017575,
+    "offer_id": "Ш/280/82",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824236
+   },
+   {
+    "product_id": 1479017576,
+    "offer_id": "ШР/106",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824213
+   },
+   {
+    "product_id": 1479017577,
+    "offer_id": "Ш/280/80",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1928824078
+   },
+   {
+    "product_id": 1479476399,
+    "offer_id": "СТ/298",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1929164367
+   },
+   {
+    "product_id": 1479476401,
+    "offer_id": "СТ/390",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1929164208
+   },
+   {
+    "product_id": 1479476407,
+    "offer_id": "СТ/90",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1929164292
+   },
+   {
+    "product_id": 1479476411,
+    "offer_id": "СТ/296",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1929164293
+   },
+   {
+    "product_id": 1482481636,
+    "offer_id": "ЧТ/513",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1931322962
+   },
+   {
+    "product_id": 1482481637,
+    "offer_id": "ЧТС/512",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1931323135
+   },
+   {
+    "product_id": 1482481638,
+    "offer_id": "ЧТС/503",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1931322841
+   },
+   {
+    "product_id": 1482481639,
+    "offer_id": "ЧТС/513",
+    "has_fbo_stocks": false,
+    "has_fbs_stocks": false,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1931322393
+   },
+   {
+    "product_id": 1482481640,
+    "offer_id": "ЧТ/507",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1931323666
+   },
+   {
+    "product_id": 1482481641,
+    "offer_id": "ЧТ/512",
+    "has_fbo_stocks": true,
+    "has_fbs_stocks": true,
+    "archived": false,
+    "is_discounted": false,
+    "quants": [],
+    "sku": 1931323065
+   }
+  ],
+  "total": 410,
+  "last_id": "WzE0ODI0ODE2NDEsMTQ4MjQ4MTY0MV0=",
+  "total_items": 410
+ }
+}

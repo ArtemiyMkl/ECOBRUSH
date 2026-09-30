@@ -60,8 +60,10 @@
   --bad: #d70015;
   --info: #0071a4;
 
-  --s-umsatz: #0071e3;
-  --s-roas: #248a3d;
+  /* Umsatz trägt den Markenton: das Grün liest sich als "unser Geld".
+     ROAS rückt dafür auf Blau, Ausgaben bleiben rot. */
+  --s-umsatz: #0f6b3d;
+  --s-roas: #0071e3;
   --s-spend: #d70015;
   --s-total-roas: #b25000;
   --s-cyan: #0a84c4;
@@ -113,8 +115,8 @@
     --bad: #ff453a;
     --info: #64d2ff;
 
-    --s-umsatz: #0a84ff;
-    --s-roas: #30d158;
+    --s-umsatz: #3ed9a0;
+    --s-roas: #0a84ff;
     --s-spend: #ff453a;
     --s-total-roas: #ff9f0a;
     --s-cyan: #4aa8ff;
@@ -154,6 +156,10 @@
   --color-warn: var(--warn);
   --color-bad: var(--bad);
   --color-info: var(--info);
+
+  --color-s-umsatz: var(--s-umsatz);
+  --color-s-roas: var(--s-roas);
+  --color-s-spend: var(--s-spend);
 
   --radius-sm: var(--r-sm);
   --radius-md: var(--r-md);
@@ -218,6 +224,13 @@ a {
     position: relative;
     z-index: 1;
   }
+}
+
+/* Wie .tile, aber ohne Anheben: grosse Abschnitte sind keine Ziele. */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
 }
 
 .inset {
@@ -476,7 +489,107 @@ a {
 }
 
 /* ============================================================
-   14. Bewegung reduzieren — Transformationen abschalten,
+   14. Segmentierte Umschalter — Sprache, Zeitraum
+   ============================================================ */
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.seg-item {
+  border: none;
+  border-radius: calc(var(--r-md) - 3px);
+  background: transparent;
+  color: var(--dim);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--d-base) var(--ease),
+    color var(--d-base) var(--ease);
+}
+
+.seg-item:hover {
+  color: var(--txt);
+}
+
+.seg-item[aria-pressed="true"] {
+  /* deckende Fläche statt Rahmen: der aktive Zustand darf nicht die
+     Breite der Nachbarn verschieben */
+  background: var(--card);
+  color: var(--txt);
+  font-weight: 600;
+}
+
+/* ============================================================
+   15. Marken — Preiszone, Kampagnenstatus, Ungelesen-Zähler
+   ============================================================ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  /* neutral: ohne data-tone bleibt die Marke stumm */
+  background: var(--raised);
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.chip[data-tone="ok"] {
+  background: color-mix(in srgb, var(--ok) 16%, transparent);
+  color: var(--ok);
+}
+
+.chip[data-tone="warn"] {
+  background: color-mix(in srgb, var(--warn) 16%, transparent);
+  color: var(--warn);
+}
+
+.chip[data-tone="bad"] {
+  background: color-mix(in srgb, var(--bad) 16%, transparent);
+  color: var(--bad);
+}
+
+.chip[data-tone="acc"] {
+  background: var(--acc-tint-strong);
+  color: var(--txt);
+}
+
+/* ============================================================
+   16. Chat-Blasen
+   ============================================================ */
+.bubble {
+  max-width: 34rem;
+  padding: 8px 12px;
+  border-radius: var(--r-lg);
+  background: var(--raised);
+  color: var(--txt);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.bubble[data-author="seller"] {
+  background: var(--acc);
+  color: var(--on-acc);
+}
+
+.bubble[data-author="support"] {
+  background: transparent;
+  border: 1px dashed var(--line);
+  color: var(--dim);
+}
+
+/* ============================================================
+   17. Bewegung reduzieren — Transformationen abschalten,
        nicht nur die Dauer auf 0 setzen (sonst springt es hart).
        Jede neue Flächen- oder Knopfklasse gehört in diese Listen.
    ============================================================ */
@@ -485,6 +598,7 @@ a {
   .btn,
   .btn-wide,
   .nav-link,
+  .seg-item,
   .field,
   .sticky-top,
   body {

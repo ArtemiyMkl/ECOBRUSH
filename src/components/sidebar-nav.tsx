@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS } from "@/lib/nav";
 
-export function SidebarNav() {
+export function SidebarNav({
+  items,
+}: {
+  items: { href: string; label: string }[];
+}) {
   const pathname = usePathname();
 
   return (
     <nav className="flex flex-col gap-0.5 p-3">
-      {NAV_ITEMS.map((item) => {
+      {items.map((item) => {
         const isActive =
           item.href === "/"
             ? pathname === "/"

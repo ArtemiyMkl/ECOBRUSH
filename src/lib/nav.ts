@@ -1,16 +1,16 @@
-export type NavItem = {
-  href: string;
-  label: string;
-  description: string;
-};
+import type { Dictionary } from "@/lib/i18n/server";
 
-export const NAV_ITEMS: NavItem[] = [
-  { href: "/", label: "Главная", description: "Сводка по магазину" },
-  { href: "/products", label: "Товары", description: "Каталог и карточки товаров" },
-  { href: "/prices", label: "Цены", description: "Цены, скидки и наценка" },
-  { href: "/fbo", label: "FBO", description: "Поставки и остатки на складах" },
-  { href: "/analytics", label: "Аналитика", description: "Показы, конверсия, заказы" },
-  { href: "/customers", label: "Покупатели", description: "Отзывы, вопросы и чаты" },
-  { href: "/promotion", label: "Продвижение", description: "Акции и рекламные кампании" },
-  { href: "/finance", label: "Финансы", description: "Транзакции и выплаты" },
+export type NavKey = keyof Dictionary["nav"];
+
+/** Reihenfolge der Seitenleiste. Die Beschriftung kommt aus dem Wörterbuch,
+ *  damit der Sprachwechsel auch die Navigation trifft. */
+export const NAV_ITEMS: { href: string; key: NavKey }[] = [
+  { href: "/", key: "home" },
+  { href: "/products", key: "products" },
+  { href: "/analytics", key: "analytics" },
+  { href: "/customers", key: "customers" },
+  { href: "/promotion", key: "promotion" },
+  { href: "/prices", key: "prices" },
+  { href: "/fbo", key: "fbo" },
+  { href: "/finance", key: "finance" },
 ];
