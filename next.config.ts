@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
       revalidate: 1800,
       expire: 86400,
     },
+    // Bestellungen: die Posting-Endpunkte haben weiche Limits, hier zählt
+    // Aktualität. `expire` bleibt bei 300 — darunter fällt der Abschnitt aus
+    // dem Prerender und jeder Aufruf wartet auf Ozon.
+    live: {
+      stale: 30,
+      revalidate: 60,
+      expire: 300,
+    },
   },
   images: {
     remotePatterns: [

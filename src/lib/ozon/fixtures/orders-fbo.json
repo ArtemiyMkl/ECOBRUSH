@@ -1,0 +1,212 @@
+{
+  "result": [
+    {
+      "order_id": 38499954089,
+      "order_number": "0165392377-0202",
+      "posting_number": "0165392377-0202-1",
+      "status": "awaiting_packaging",
+      "substatus": "posting_created",
+      "cancel_reason_id": 0,
+      "created_at": "2026-09-30T10:26:53.838674Z",
+      "in_process_at": "2026-09-30T10:27:10.015059Z",
+      "products": [
+        {
+          "sku": 1928670524,
+          "name": "ECOBRUSH Щетка расчёска для ухода за волосами с натуральным волокном тампико 31 пучок Р/242",
+          "quantity": 1,
+          "offer_id": "Р/242",
+          "price": "649.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Ишимбай",
+        "delivery_type": "PVZ",
+        "warehouse_name": "ОРСК_168",
+        "is_legal": false
+      }
+    },
+    {
+      "order_id": 39379752220,
+      "order_number": "91564204-0243",
+      "posting_number": "91564204-0243-1",
+      "status": "awaiting_packaging",
+      "substatus": "posting_created",
+      "cancel_reason_id": 0,
+      "created_at": "2026-09-30T10:22:09.715453Z",
+      "in_process_at": "2026-09-30T10:22:16.331646Z",
+      "products": [
+        {
+          "sku": 1928670687,
+          "name": "Расческа для волос массажная мужская женская для кудрявых длинных густых, деревянная с натуральной щетиной кабана, 79 пучков, ECOBRUSH Р/190",
+          "quantity": 1,
+          "offer_id": "Р/190",
+          "price": "798.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Санкт-Петербург",
+        "delivery_type": "PVZ",
+        "warehouse_name": "СПБ_ПОРОШКИНО_РФЦ",
+        "is_legal": false
+      }
+    },
+    {
+      "order_id": 39214145052,
+      "order_number": "19321788-0888",
+      "posting_number": "19321788-0888-4",
+      "status": "awaiting_packaging",
+      "substatus": "posting_created",
+      "cancel_reason_id": 0,
+      "created_at": "2026-09-30T10:18:11.519535Z",
+      "in_process_at": "2026-09-30T10:18:20.072286Z",
+      "products": [
+        {
+          "sku": 1923174397,
+          "name": "Щетка для чистки и массажа рук деревянная, двухсторонняя с щетиной кабана 75 пучков ECOBRUSH Р/76",
+          "quantity": 1,
+          "offer_id": "Р/76",
+          "price": "627.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Мытищи",
+        "delivery_type": "PVZ",
+        "warehouse_name": "СОФЬИНО_РФЦ",
+        "is_legal": false
+      }
+    },
+    {
+      "order_id": 39102884471,
+      "order_number": "0174558201-0311",
+      "posting_number": "0174558201-0311-1",
+      "status": "delivering",
+      "substatus": "posting_in_courier_service",
+      "cancel_reason_id": 0,
+      "created_at": "2026-09-30T07:41:02.118374Z",
+      "in_process_at": "2026-09-30T07:41:19.552810Z",
+      "products": [
+        {
+          "sku": 1928824235,
+          "name": "Швабра для пола с синтетическим волокном 106 пучков ECOBRUSH Ш/628/106",
+          "quantity": 2,
+          "offer_id": "Ш/628/106",
+          "price": "914.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Казань",
+        "delivery_type": "PVZ",
+        "warehouse_name": "КАЗАНЬ_РФЦ",
+        "is_legal": false
+      }
+    },
+    {
+      "order_id": 39203051729,
+      "order_number": "69019329-0270",
+      "posting_number": "69019329-0270-1",
+      "status": "delivered",
+      "substatus": "posting_delivered",
+      "cancel_reason_id": 0,
+      "created_at": "2026-09-29T08:17:35.838613Z",
+      "in_process_at": "2026-09-29T08:17:45.912767Z",
+      "products": [
+        {
+          "sku": 1928550061,
+          "name": "Щетка расчёска для собак массажная деревянная с щетиной кабана 65 пучков ECOBRUSH С/190",
+          "quantity": 1,
+          "offer_id": "С/190",
+          "price": "659.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Новосибирск",
+        "delivery_type": "Courier",
+        "warehouse_name": "НОВОСИБИРСК_РФЦ_НОВЫЙ",
+        "is_legal": false
+      }
+    },
+    {
+      "order_id": 38906010333,
+      "order_number": "0239599949-0089",
+      "posting_number": "0239599949-0089-2",
+      "status": "delivered",
+      "substatus": "posting_delivered",
+      "cancel_reason_id": 0,
+      "created_at": "2026-09-29T06:15:16.575650Z",
+      "in_process_at": "2026-09-29T06:15:57.544582Z",
+      "products": [
+        {
+          "sku": 1928824235,
+          "name": "Швабра для пола с синтетическим волокном 106 пучков ECOBRUSH Ш/628/106",
+          "quantity": 1,
+          "offer_id": "Ш/628/106",
+          "price": "914.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "",
+        "delivery_type": "Courier",
+        "warehouse_name": "СПБ_КОЛПИНО_РФЦ",
+        "is_legal": true
+      }
+    },
+    {
+      "order_id": 39743934127,
+      "order_number": "49393695-0346",
+      "posting_number": "49393695-0346-3",
+      "status": "cancelled",
+      "substatus": "posting_canceled",
+      "cancel_reason_id": 505,
+      "created_at": "2026-09-29T12:57:54.240902Z",
+      "in_process_at": "2026-09-29T12:58:02.372395Z",
+      "products": [
+        {
+          "sku": 1928824081,
+          "name": "Щетка для мытья овощей и фруктов деревянная с волокном тампико 42 пучка ECOBRUSH ХО/071",
+          "quantity": 1,
+          "offer_id": "ХО/071",
+          "price": "643.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Москва",
+        "delivery_type": "PVZ",
+        "warehouse_name": "ДОМОДЕДОВО_РФЦ",
+        "is_legal": false
+      }
+    },
+    {
+      "order_id": 38786952021,
+      "order_number": "95332325-0185",
+      "posting_number": "95332325-0185-1",
+      "status": "cancelled",
+      "substatus": "posting_canceled",
+      "cancel_reason_id": 508,
+      "created_at": "2026-09-29T05:01:22.149243Z",
+      "in_process_at": "2026-09-29T05:02:16.408573Z",
+      "products": [
+        {
+          "sku": 1923174404,
+          "name": "Щетка для рук и ногтей деревянная, двухсторонняя с щетиной кабана 97 пучков ECOBRUSH Р/96",
+          "quantity": 1,
+          "offer_id": "Р/96",
+          "price": "656.00",
+          "currency_code": "RUB"
+        }
+      ],
+      "analytics_data": {
+        "city": "Екатеринбург",
+        "delivery_type": "PVZ",
+        "warehouse_name": "ЕКАТЕРИНБУРГ_РФЦ_НОВЫЙ",
+        "is_legal": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "result": {
+    "postings": [
+      {
+        "posting_number": "0238756141-0251-1",
+        "order_id": 38987654321,
+        "order_number": "0238756141-0251",
+        "status": "awaiting_packaging",
+        "substatus": "posting_created",
+        "cancel_reason_id": 0,
+        "in_process_at": "2026-09-30T09:45:28Z",
+        "shipment_date": "2026-10-01T10:30:00Z",
+        "delivery_method": {
+          "name": "Ozon Логистика самостоятельно, Учинская",
+          "warehouse": "FBS Учинская",
+          "tpl_provider": "Ozon Логистика"
+        },
+        "products": [
+          {
+            "sku": 4561626576,
+            "name": "Швабра для пола с синтетическим волокном 106 пучков ECOBRUSH Ш/628/106",
+            "quantity": 1,
+            "offer_id": "Ш/628/106",
+            "price": "1024.0000",
+            "currency_code": "RUB"
+          }
+        ],
+        "analytics_data": {
+          "city": "Москва",
+          "delivery_type": "PVZ",
+          "warehouse": "FBS Учинская",
+          "is_legal": false
+        }
+      },
+      {
+        "posting_number": "0202857374-0252-4",
+        "order_id": 39011223344,
+        "order_number": "0202857374-0252",
+        "status": "awaiting_deliver",
+        "substatus": "posting_transferring_to_delivery",
+        "cancel_reason_id": 0,
+        "in_process_at": "2026-09-30T08:52:11Z",
+        "shipment_date": "2026-09-30T10:30:00Z",
+        "delivery_method": {
+          "name": "Ozon Логистика самостоятельно, Учинская",
+          "warehouse": "FBS Учинская",
+          "tpl_provider": "Ozon Логистика"
+        },
+        "products": [
+          {
+            "sku": 4561626576,
+            "name": "Швабра для пола с синтетическим волокном 106 пучков ECOBRUSH Ш/628/106",
+            "quantity": 2,
+            "offer_id": "Ш/628/106",
+            "price": "983.0000",
+            "currency_code": "RUB"
+          }
+        ],
+        "analytics_data": {
+          "city": "Химки",
+          "delivery_type": "Courier",
+          "warehouse": "FBS Учинская",
+          "is_legal": true
+        }
+      },
+      {
+        "posting_number": "0217744902-0248-1",
+        "order_id": 38899001122,
+        "order_number": "0217744902-0248",
+        "status": "delivered",
+        "substatus": "posting_delivered",
+        "cancel_reason_id": 0,
+        "in_process_at": "2026-09-28T14:03:47Z",
+        "shipment_date": "2026-09-29T10:30:00Z",
+        "delivery_method": {
+          "name": "Ozon Логистика самостоятельно, Учинская",
+          "warehouse": "FBS Учинская",
+          "tpl_provider": "Ozon Логистика"
+        },
+        "products": [
+          {
+            "sku": 4561626576,
+            "name": "Швабра для пола с синтетическим волокном 106 пучков ECOBRUSH Ш/628/106",
+            "quantity": 1,
+            "offer_id": "Ш/628/106",
+            "price": "1024.0000",
+            "currency_code": "RUB"
+          }
+        ],
+        "analytics_data": {
+          "city": "Подольск",
+          "delivery_type": "PVZ",
+          "warehouse": "FBS Учинская",
+          "is_legal": false
+        }
+      },
+      {
+        "posting_number": "0195630418-0244-2",
+        "order_id": 38771100998,
+        "order_number": "0195630418-0244",
+        "status": "cancelled",
+        "substatus": "posting_canceled",
+        "cancel_reason_id": 402,
+        "in_process_at": "2026-09-29T17:22:05Z",
+        "shipment_date": "2026-09-30T10:30:00Z",
+        "delivery_method": {
+          "name": "Ozon Логистика самостоятельно, Учинская",
+          "warehouse": "FBS Учинская",
+          "tpl_provider": "Ozon Логистика"
+        },
+        "products": [
+          {
+            "sku": 4561626576,
+            "name": "Швабра для пола с синтетическим волокном 106 пучков ECOBRUSH Ш/628/106",
+            "quantity": 1,
+            "offer_id": "Ш/628/106",
+            "price": "983.0000",
+            "currency_code": "RUB"
+          }
+        ],
+        "analytics_data": {
+          "city": "Тула",
+          "delivery_type": "PVZ",
+          "warehouse": "FBS Учинская",
+          "is_legal": false
+        }
+      }
+    ],
+    "has_next": false
+  }
+}

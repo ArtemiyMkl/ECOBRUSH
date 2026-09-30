@@ -164,6 +164,35 @@ export function IconGlobe(props: IconProps) {
   );
 }
 
+export function IconTruck(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M2.5 6.5h11v10h-11v-10z" />
+      <path d="M13.5 10h4l4 3.5v3h-8" />
+      <circle cx="7" cy="18" r="1.6" />
+      <circle cx="17" cy="18" r="1.6" />
+    </Svg>
+  );
+}
+
+export function IconClock(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </Svg>
+  );
+}
+
+export function IconRefresh(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+      <path d="M20 4v4h-4" />
+    </Svg>
+  );
+}
+
 /** Kleiner Richtungspfeil für Veränderungen — bewusst 12er-Raster, damit er
  *  neben der Prozentzahl nicht wie ein eigenes Symbol wirkt. */
 export function IconTrend({

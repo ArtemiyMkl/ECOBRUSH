@@ -104,6 +104,39 @@ export type AdSpend = {
   entries: { campaignId: string; title: string; date: string; spend: number }[];
 };
 
+export type PostingScheme = "fbo" | "fbs";
+
+/** Ozon kennt über zwanzig Status; die Übersicht braucht vier Spalten. */
+export type PostingGroup = "new" | "shipping" | "done" | "cancelled";
+
+export type PostingItem = {
+  sku: string;
+  offerId: string;
+  name: string;
+  quantity: number;
+  price: number;
+};
+
+export type Posting = {
+  postingNumber: string;
+  orderNumber: string;
+  scheme: PostingScheme;
+  status: string;
+  group: PostingGroup;
+  /** `in_process_at` — der einzige Zeitstempel, den FBO und FBS beide führen.
+   *  FBS liefert kein `created_at`. */
+  placedAt: string;
+  /** Nur FBS: Frist für die Übergabe an die Logistik. */
+  shipmentDate: string | null;
+  city: string;
+  warehouse: string;
+  deliveryType: string;
+  isLegal: boolean;
+  items: PostingItem[];
+  units: number;
+  total: number;
+};
+
 export type SellerRating = {
   productScore: number;
   localizationPercent: number;

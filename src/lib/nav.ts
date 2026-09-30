@@ -6,6 +6,7 @@ export type NavKey = keyof Dictionary["nav"];
  *  damit der Sprachwechsel auch die Navigation trifft. */
 export const NAV_ITEMS: { href: string; key: NavKey }[] = [
   { href: "/", key: "home" },
+  { href: "/orders", key: "orders" },
   { href: "/products", key: "products" },
   { href: "/analytics", key: "analytics" },
   { href: "/customers", key: "customers" },
