@@ -21,22 +21,62 @@ export class OzonError extends Error {
   }
 }
 
-export async function sellerPost<T>(
-  path: string,
-  body: unknown,
-): Promise<T> {
-  const res = await fetch(`${SELLER_BASE}${path}`, {
-    method: "POST",
-    headers: {
-      "Client-Id": process.env.OZON_CLIENT_ID!,
-      "Api-Key": process.env.OZON_API_KEY!,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  if (!res.ok) throw new OzonError(res.status, path, await res.text());
-  return (await res.json()) as T;
+/** Ozon zählt Anfragen je Endpunkt und lässt eine pro Sekunde zu — mehr
+ *  antwortet mit 429 `You have reached request rate limit per second`. Eine
+ *  Analytik-Reihe aus mehreren Scheiben reißt das Limit sonst sofort, deshalb
+ *  laufen Aufrufe desselben Pfads hintereinander und mit Abstand. */
+const MIN_GAP_MS = 1100;
+const RETRIES = 3;
+
+/** Nur Zeitstempel, keine Promises: ein modulweiter Promise, an den sich jeder
+ *  Aufruf anhängt, würde `"use cache"` blockieren — es erkennt eine Kette aus
+ *  dem äußeren Render-Bereich und bricht das Füllen des Eintrags ab. */
+const nextSlot = new Map<string, number>();
+
+async function throttled<T>(path: string, task: () => Promise<T>): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    // Der Platz wird vor dem Warten belegt, damit zwei gleichzeitige Aufrufe
+    // desselben Pfads verschiedene Fenster bekommen. Nach einem 429 wächst der
+    // Abstand, damit ein überfülltes Fenster Zeit hat, sich zu leeren.
+    const slot = Math.max(
+      Date.now(),
+      (nextSlot.get(path) ?? 0) + MIN_GAP_MS * (attempt + 1),
+    );
+    nextSlot.set(path, slot);
+
+    const gap = slot - Date.now();
+    if (gap > 0) await wait(gap);
+
+    try {
+      return await task();
+    } catch (error) {
+      const retryable =
+        error instanceof OzonError &&
+        (error.status === 429 || error.status === 503);
+      if (!retryable || attempt >= RETRIES) throw error;
+    }
+  }
+}
+
+export async function sellerPost<T>(path: string, body: unknown): Promise<T> {
+  return throttled(path, async () => {
+    const res = await fetch(`${SELLER_BASE}${path}`, {
+      method: "POST",
+      headers: {
+        "Client-Id": process.env.OZON_CLIENT_ID!,
+        "Api-Key": process.env.OZON_API_KEY!,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) throw new OzonError(res.status, path, await res.text());
+    return (await res.json()) as T;
+  });
 }
 
 /** Performance-Tokens leben eine halbe Stunde; im Prozess zwischengespeichert,

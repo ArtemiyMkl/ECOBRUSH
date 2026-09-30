@@ -77,10 +77,17 @@ function parseExpenseCsv(csv: string): AdSpend["entries"] {
   return entries;
 }
 
-/** Wie bei der Analytik wird der ganze Verlauf in Jahresscheiben geholt und
- *  danach im Speicher auf den gewählten Zeitraum eingeschränkt. */
-const CHUNK_DAYS = 364;
-const MAX_CHUNKS = 5;
+/** Wie bei der Analytik wird der ganze Verlauf in Scheiben geholt und danach im
+ *  Speicher auf den gewählten Zeitraum eingeschränkt. Der Ausgaben-Report lässt
+ *  höchstens 61 Tage zwischen den Enden zu — ab 62 antwortet er
+ *  `max statistics period: 62 days`. Zwölf Scheiben decken rund zwei Jahre. */
+const CHUNK_DAYS = 61;
+const MAX_CHUNKS = 12;
+
+/** Eine leere Scheibe heißt nicht, dass die Geschichte zu Ende ist: bei 61 Tagen
+ *  reicht eine Werbepause, um eine zu leeren. Erst zwei leere hintereinander
+ *  sind ein Ende. */
+const EMPTY_CHUNKS_UNTIL_STOP = 2;
 
 export async function getAdSpend(): Promise<AdSpend> {
   "use cache";
@@ -91,6 +98,8 @@ export async function getAdSpend(): Promise<AdSpend> {
 
   if (OZON_PERF_LIVE) {
     let to = isoDay(1);
+    let empty = 0;
+
     for (let chunk = 0; chunk < MAX_CHUNKS; chunk++) {
       const d = new Date(`${to}T00:00:00Z`);
       d.setUTCDate(d.getUTCDate() - CHUNK_DAYS);
@@ -102,7 +111,9 @@ export async function getAdSpend(): Promise<AdSpend> {
         ),
       );
       entries.unshift(...rows);
-      if (rows.length === 0) break;
+
+      empty = rows.length === 0 ? empty + 1 : 0;
+      if (empty >= EMPTY_CHUNKS_UNTIL_STOP) break;
 
       d.setUTCDate(d.getUTCDate() - 1);
       to = d.toISOString().slice(0, 10);
